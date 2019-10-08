@@ -1,5 +1,6 @@
 # codesandbox-nuxt
 
+[![Edit codesandbox-nuxt](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/codesandbox-nuxt-sipkh?fontsize=14)
 > Nuxt starter for CodeSandBox (used for https://template.nuxtjs.org)
 
 ## Build Setup
