@@ -2,6 +2,7 @@ export const state = () => ({
   currentDirectory: {
     name: "root:"
   },
+  currentFile: null,
   nodes: [],
   files: []
 })
@@ -35,11 +36,38 @@ export const mutations = {
   },
   findByPath (state, path) {
 
+  },
+  setCurrentFile(state, file) {
+    state.currentFile = file
+  },
+  commitFileChanged(state, file) {
+
+  }
+}
+
+export const actions = {
+  commitFileChanged(context, payload) {
+    context.commit('commitFileChanged')
   }
 }
 
 export const getters = {
+  currentDirectoryPath({currentDirectory}) {
+    let path = ''
+    let dir = currentDirectory
+    while(true) {
+      if(dir.parent) {
+        path = dir.name + '/' + path
+        dir = dir.parent
+      }
+      else return '/' + path
+    }
+    return currentDirectory.name
+  },
   currentDirectory({ nodes, currentDirectory }) {
     return nodes.filter(x => x.parent === currentDirectory)
+  },
+  currentFile({ currentFile }) {
+    return currentFile
   }
 }
