@@ -6,7 +6,7 @@
     <!-- Create new directory -->
     <v-dialog v-model="dialog" persistent max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Create New Directory</v-btn>
+        <v-btn color="primary" dark v-on="on"><v-icon>mdi-folder-plus</v-icon></v-btn>
       </template>
       <v-card>
         <v-card-title>
@@ -28,7 +28,7 @@
     <!-- Create new file -->
     <v-dialog v-model="fileDialog" persistent max-width="600px">
       <template v-slot:activator="{ on }">
-        <v-btn color="primary" dark v-on="on">Create New File</v-btn>
+        <v-btn color="primary" dark v-on="on"><v-icon>mdi-file-plus</v-icon></v-btn>
       </template>
       <v-card>
         <v-card-title>
