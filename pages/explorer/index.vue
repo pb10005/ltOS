@@ -1,17 +1,31 @@
+<i18n>
+{
+    "ja": {
+      "apps": "アプリ一覧 ",
+      "explorer": "エクスプローラ",
+      "save": "保存"
+    },
+    "en": {
+      "apps": "Apps",
+      "explorer": "Explorer",
+      "save": "Save"
+    }
+}
+</i18n>
 <template>
   <section>
-    <h3>Explorer</h3>
+    <v-text-field label="path" v-model="path"></v-text-field>
     <v-icon @click="up">mdi-arrow-collapse-up</v-icon>
     <create-directory-dialog @ok="createDirectory" />
     <create-file-dialog @ok="createFile" />
-    <v-btn class="success" @click="$store.commit('fileSystem/save')">Save</v-btn>
-    <v-text-field label="path" v-model="path"></v-text-field>
     <node-list
       :nodes="nodes"
       @changeDirectory="changeDirectory"
       @removeDirectory="removeDirectory"
       @openFile="openFile"
       @removeFile="removeFile"/>
+    <v-btn @click="$router.push('/local')">{{ $t('apps') }}</v-btn>
+    <v-btn class="success" @click="$store.commit('fileSystem/save')">{{ $t('save') }}</v-btn>
   </section>
 </template>
 <script>
@@ -23,6 +37,9 @@ export default {
     CreateDirectoryDialog,
     CreateFileDialog,
     NodeList
+  },
+  mounted() {
+    this.$store.commit("app/app", "explorer")
   },
   computed: {
     path() {

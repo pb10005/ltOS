@@ -39,6 +39,17 @@ export default {
     // Doc: https://http.nuxtjs.org
     '@nuxt/http',
     '@nuxtjs/pwa',
+    [
+      'nuxt-i18n',
+      {
+        locales: [{ code: 'en', iso: 'en-US'}, {code: 'ja', iso: 'ja_JP'}],
+        defaultLocale: 'en',
+        vueI18n: {
+          fallbackLocale: 'en'
+        },
+        vueI18nLoader: true
+      }
+    ],
     // TODO: Remove it if you want to eject from codeSandbox
     './codesandbox'
   ],

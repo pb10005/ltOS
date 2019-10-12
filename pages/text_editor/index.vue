@@ -1,7 +1,5 @@
 <template>
     <section>
-        <h3>Text Editor</h3>
-        <v-divider />
         <v-text-field label="File Name" v-model="fileName"></v-text-field>
         <v-textarea
             outlined
@@ -14,6 +12,9 @@
 </template>
 <script>
 export default {
+    mounted() {
+        this.$store.commit("app/app", "texteditor")
+    },
     computed: {
         fileName() {
             return this.$store.getters['fileSystem/currentFile'].name

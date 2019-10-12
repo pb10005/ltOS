@@ -1,33 +1,43 @@
+<i18n>
+{
+  "ja": {
+    "local": "ローカル",
+    "cloud": "クラウド",
+    "login": "ログイン"
+  },
+  "en": {
+    "local": "Local",
+    "cloud": "Cloud",
+    "login": "Log in"
+  }
+}
+</i18n>
 <template>
   <section>
-      <div class="links">
-        <NLink to="/about">About</NLink>
-      </div>
-
       <v-row>
         <v-col>
           <v-card>
             <v-card-title>
-            Local
+              {{ $t('local')}}
             </v-card-title>
             <v-card-text>
               ブラウザのストレージにデータを保存します
             </v-card-text>
             <v-card-actions>
-              <v-btn @click="$router.push('/local')">Log in</v-btn>
+              <v-btn @click="$router.push('/local')">{{ $t('login') }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
         <v-col>
           <v-card>
             <v-card-title>
-            Cloud
+              {{ $t('cloud') }}
             </v-card-title>
             <v-card-text>
               サーバーにデータを保存します
             </v-card-text>
             <v-card-actions>
-              <v-btn>Log in</v-btn>
+              <v-btn>{{ $t('login') }}</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>

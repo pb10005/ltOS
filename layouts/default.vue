@@ -1,9 +1,24 @@
+<i18n>
+{
+  "ja": {
+    "explorer": "エクスプローラ",
+    "texteditor": "テキストエディタ"
+  },
+  "en": {
+    "explorer": "Explorer",
+    "texteditor": "Text Editor"
+  }
+}
+</i18n>
 <template>
   <v-app>
     <v-sheet
       class="overflow-hidden">
       <v-system-bar color="primary">
         <v-icon @click="drawer=!drawer">mdi-menu</v-icon>
+        <span>
+          {{$t(app)}}
+        </span>
       </v-system-bar>
       <v-container class="full-height" fluid>
         <Nuxt/>
@@ -35,6 +50,9 @@
 <script>
 export default {
   computed: {
+    app() {
+      return this.$store.getters['app/currentApp']
+    },
     list() {
       return [
         {title: "home", icon: "mdi-home", link: "/"}
@@ -43,7 +61,7 @@ export default {
   },
   data() {
     return {
-      drawer: true
+      drawer: false
     }
   }
 }
