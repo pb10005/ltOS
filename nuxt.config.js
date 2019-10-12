@@ -31,6 +31,12 @@ export default {
   */
   plugins: [],
 
+  pwa: {
+    manifest: {
+      name: 'Explorer',
+      lang: 'en'
+    }
+  },
   /*
   ** Nuxt.js modules
   ** Doc: https://nuxtjs.org/guide/modules
