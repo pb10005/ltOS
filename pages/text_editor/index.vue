@@ -14,6 +14,7 @@
 export default {
     mounted() {
         this.$store.commit("app/app", "texteditor")
+        this.newContent = this.content
     },
     computed: {
         fileName() {
