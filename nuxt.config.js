@@ -3,7 +3,7 @@ export default {
   ** Rendering mode
   ** Doc: https://nuxtjs.org/api/configuration-mode
   */
-  mode: 'universal',
+  mode: 'spa',
 
   /*
   ** Headers of the page

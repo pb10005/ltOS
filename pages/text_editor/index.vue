@@ -1,21 +1,42 @@
 <template>
     <section>
-        エディター
-        <v-textarea v-model="content">
+        <h3>Text Editor</h3>
+        <v-divider />
+        <v-text-field label="File Name" v-model="fileName"></v-text-field>
+        <v-textarea
+            outlined
+            :rows="30"
+            v-model="content">
         </v-textarea>
-        <v-btn @click="$router.go(-1)">戻る</v-btn>
+        <v-btn class="success" @click="commit">Save</v-btn>
+        <v-btn class="secondary" @click="$router.go(-1)">Cancel</v-btn>
     </section>
 </template>
 <script>
 export default {
     computed: {
+        fileName() {
+            return this.$store.getters['fileSystem/currentFile'].name
+        },
         content: {
             get() {
                 return this.$store.getters['fileSystem/currentFile'].content
             },
             set(value) {
-                this.$store.dispatch("fileSystem/commitFileChanged", value)
+                this.newContent = value
             }
+        }
+    },
+    data() {
+        return {
+            newContent: ''
+        }
+    },
+    methods: {
+        commit() {
+            this.$store.commit("fileSystem/commitFileChanged", this.newContent)
+            this.$store.commit("fileSystem/save")
+            this.$router.go(-1)
         }
     }
 }

@@ -1,20 +1,45 @@
+const root = {
+  name: 'root:',
+  default: true
+}
+
+const trash = {
+  name: 'Trash Bin',
+  nodeType: 'trash',
+  default: true,
+  parent: root
+}
+
+function fetchData() {
+  let data = JSON.parse(localStorage.getItem('fileSystem'))
+  if(!data) return [trash]
+  data.forEach(x => {
+    if(x.parentID >= 0)
+      x.parent = data[x.parentID]
+    else if(x.parentID === -2)
+      x.parent = trash
+    else
+      x.parent = root
+    delete x.parentID
+  })
+  return [trash, ...data]
+}
+
 export const state = () => ({
-  currentDirectory: {
-    name: "root:"
-  },
+  currentDirectory: root,
   currentFile: null,
-  nodes: [],
-  files: []
+  trash: trash,
+  nodes: fetchData()
 })
 
 export const mutations = {
   up(state) {
-    if(state.currentDirectory.name === "root:") return
+    if(state.currentDirectory.name === 'root:') return
+    if(state.currentDirectory.parent === null) return
     state.currentDirectory = state.currentDirectory.parent
   },
-  changeDirectory(state, name) {
-    let d = state.nodes.find(x => x.name === name && x.parent === state.currentDirectory)
-    state.currentDirectory = d
+  changeDirectory(state, dir) {
+    state.currentDirectory = dir
   },
   createFile (state, {name, content}) {
     if(state.nodes.filter(x => x.name === name && x.parent === state.currentDirectory).length > 0) return
@@ -25,12 +50,11 @@ export const mutations = {
       parent: state.currentDirectory
     })
   },
-  createDirectory (state, {name , content, parentPath}) {
+  createDirectory (state, {name}) {
     if(state.nodes.filter(x => x.name === name && x.parent === state.currentDirectory).length > 0) return
     state.nodes.push({
       nodeType: "directory",
       name,
-      content,
       parent: state.currentDirectory
     })
   },
@@ -40,15 +64,30 @@ export const mutations = {
   setCurrentFile(state, file) {
     state.currentFile = file
   },
-  commitFileChanged(state, file) {
-
+  commitFileChanged(state, content) {
+    state.currentFile.content = content
+  },
+  removeDirectory(state, node) {
+    node.parent = state.trash
+  },
+  removeFile(state, node) {
+    node.parent = state.trash
+  },
+  save(state) {
+    const nodes = state.nodes.filter(x => !x.default).map(x => {
+      return {
+        nodeType: x.nodeType,
+        name: x.name,
+        default: x.default,
+        content: x.content,
+        parentID: x.parent === state.trash ? -2 : state.nodes.indexOf(x.parent)
+      }
+    })
+    localStorage.setItem('fileSystem', JSON.stringify(nodes))
   }
 }
 
 export const actions = {
-  commitFileChanged(context, payload) {
-    context.commit('commitFileChanged')
-  }
 }
 
 export const getters = {
@@ -62,7 +101,6 @@ export const getters = {
       }
       else return '/' + path
     }
-    return currentDirectory.name
   },
   currentDirectory({ nodes, currentDirectory }) {
     return nodes.filter(x => x.parent === currentDirectory)

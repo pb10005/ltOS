@@ -8,26 +8,26 @@
         <v-col>
           <v-card>
             <v-card-title>
-            ローカル
+            Local
             </v-card-title>
             <v-card-text>
               ブラウザのストレージにデータを保存します
             </v-card-text>
             <v-card-actions>
-              <v-btn @click="$router.push('/local')">ログイン</v-btn>
+              <v-btn @click="$router.push('/local')">Log in</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
         <v-col>
           <v-card>
             <v-card-title>
-            クラウド
+            Cloud
             </v-card-title>
             <v-card-text>
               サーバーにデータを保存します
             </v-card-text>
             <v-card-actions>
-              <v-btn>ログイン</v-btn>
+              <v-btn>Log in</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
