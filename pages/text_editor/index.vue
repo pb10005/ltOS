@@ -1,13 +1,13 @@
 <template>
     <section>
         <v-text-field label="File Name" v-model="fileName"></v-text-field>
+        <v-icon color="secondary" @click="$router.go(-1)">mdi-arrow-left</v-icon>
+        <v-icon color="success" @click="commit">mdi-content-save</v-icon>
         <v-textarea
             outlined
             :rows="30"
             v-model="content">
         </v-textarea>
-        <v-btn class="success" @click="commit">Save</v-btn>
-        <v-btn class="secondary" @click="$router.go(-1)">Cancel</v-btn>
     </section>
 </template>
 <script>

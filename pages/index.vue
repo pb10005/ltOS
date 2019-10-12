@@ -24,7 +24,8 @@
               ブラウザのストレージにデータを保存します
             </v-card-text>
             <v-card-actions>
-              <v-btn @click="$router.push('/local')">{{ $t('login') }}</v-btn>
+              <v-icon @click="$router.push('/local')">mdi-login</v-icon>
+              <span>{{$t('login')}}</span>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -37,7 +38,8 @@
               サーバーにデータを保存します
             </v-card-text>
             <v-card-actions>
-              <v-btn>{{ $t('login') }}</v-btn>
+              <v-icon>mdi-login</v-icon>
+              <span>{{$t('login')}}</span>
             </v-card-actions>
           </v-card>
         </v-col>

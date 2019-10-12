@@ -25,7 +25,6 @@
       @openFile="openFile"
       @removeFile="removeFile"/>
     <v-btn @click="$router.push('/local')">{{ $t('apps') }}</v-btn>
-    <v-btn class="success" @click="$store.commit('fileSystem/save')">{{ $t('save') }}</v-btn>
   </section>
 </template>
 <script>
@@ -60,12 +59,14 @@ export default {
       this.$store.commit("fileSystem/createDirectory", {
         name: directoryName
       })
+      this.$store.commit("fileSystem/save")
     },
     createFile(fileName) {
       this.$store.commit("fileSystem/createFile", {
         name: fileName,
         content: ''
       })
+      this.$store.commit("fileSystem/save")
     },
     openFile(item) {
       this.$store.commit('fileSystem/setCurrentFile', item)
@@ -73,9 +74,11 @@ export default {
     },
     removeFile(item) {
       this.$store.commit('fileSystem/removeFile', item)
+      this.$store.commit("fileSystem/save")
     },
     removeDirectory(item) {
       this.$store.commit('fileSystem/removeDirectory', item)
+      this.$store.commit("fileSystem/save")
     }
   }
 }
