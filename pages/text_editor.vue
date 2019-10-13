@@ -1,6 +1,16 @@
+<i18n>
+{
+  "ja": {
+    "filename": "ファイル名"
+  },
+  "en": {
+    "filename": "File Name"
+  }
+}
+</i18n>
 <template>
     <section>
-        <v-text-field label="File Name" v-model="fileName"></v-text-field>
+        <v-text-field :label="$t('filename')" v-model="fileName"></v-text-field>
         <v-icon color="secondary" @click="$router.go(-1)">mdi-arrow-left</v-icon>
         <v-icon color="success" @click="commit">mdi-content-save</v-icon>
         <v-textarea

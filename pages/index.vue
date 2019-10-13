@@ -45,6 +45,7 @@
             <v-card-actions>
               <v-btn
                 text
+                disabled
                 color="indigo">
                 <v-icon>mdi-login</v-icon>
                 <span>{{$t('login')}}</span>

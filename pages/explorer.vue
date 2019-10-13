@@ -3,18 +3,20 @@
     "ja": {
       "apps": "アプリ一覧",
       "explorer": "エクスプローラ",
-      "save": "保存"
+      "save": "保存",
+        "path": "パス"
     },
     "en": {
       "apps": "Apps",
       "explorer": "Explorer",
-      "save": "Save"
+      "save": "Save",
+        "path": "Path"
     }
 }
 </i18n>
 <template>
   <section>
-    <v-text-field label="path" v-model="path"></v-text-field>
+    <v-text-field :label="$t('path')" v-model="path"></v-text-field>
     <v-icon @click="up">mdi-arrow-collapse-up</v-icon>
     <create-directory-dialog @ok="createDirectory" />
     <create-file-dialog @ok="createFile" />

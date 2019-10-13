@@ -5,6 +5,9 @@ export default {
   */
   mode: 'spa',
 
+  server: {
+    host: '0.0.0.0'
+  },
   /*
   ** Headers of the page
   ** Doc: https://vue-meta.nuxtjs.org/api/#metainfo-properties
