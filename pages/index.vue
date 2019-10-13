@@ -3,12 +3,16 @@
   "ja": {
     "local": "ローカル",
     "cloud": "クラウド",
-    "login": "ログイン"
+    "login": "ログイン",
+    "local_detail": "ブラウザのストレージにデータを保存します",
+    "cloud_detail": "サーバーにデータを保存します"
   },
   "en": {
     "local": "Local",
     "cloud": "Cloud",
-    "login": "Log in"
+    "login": "Log in",
+    "local_detail": "Save data on your computer",
+    "cloud_detail": "Sava data on the server"
   }
 }
 </i18n>
@@ -21,7 +25,7 @@
               {{ $t('local')}}
             </v-card-title>
             <v-card-text>
-              ブラウザのストレージにデータを保存します
+              {{$t('local_detail')}}
             </v-card-text>
             <v-card-actions>
               <v-btn
@@ -40,7 +44,7 @@
               {{ $t('cloud') }}
             </v-card-title>
             <v-card-text>
-              サーバーにデータを保存します
+              {{$t('cloud_detail')}}
             </v-card-text>
             <v-card-actions>
               <v-btn
