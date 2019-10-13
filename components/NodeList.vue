@@ -7,14 +7,14 @@
           v-if="item.nodeType === 'directory'"
           @click="changeDirectory(item)">
           <v-list-item-avatar>
-            <v-icon>{{getIcon(item.nodeType)}}</v-icon>
+            <v-icon color="indigo lighten-1">{{getIcon(item.nodeType)}}</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
             <span>{{item.name}}</span>
           </v-list-item-content>
           <v-list-item-action v-if="!item.default">
             <v-btn icon @click="removeDirectory(item)">
-              <v-icon color="grey lighten-1">mdi-delete</v-icon>
+              <v-icon color="red lighten-1">mdi-delete</v-icon>
             </v-btn>
           </v-list-item-action>
         </v-list-item>
@@ -22,14 +22,14 @@
           v-if="item.nodeType === 'file'"
           @click="openFile(item)">
           <v-list-item-avatar>
-            <v-icon>{{getIcon(item.nodeType)}}</v-icon>
+            <v-icon color="lime accent-4">{{getIcon(item.nodeType)}}</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
             <span>{{item.name}}</span>
           </v-list-item-content>
           <v-list-item-action v-if="!item.default">
             <v-btn icon @click="removeFile(item)">
-              <v-icon color="grey lighten-1">mdi-delete</v-icon>
+              <v-icon color="red lighten-1">mdi-delete</v-icon>
             </v-btn>
           </v-list-item-action>
         </v-list-item>

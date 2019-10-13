@@ -23,7 +23,7 @@
         <v-list>
             <v-list-item @click="$router.push(localePath(item.link))" v-for="(item, index) in items" :key="index">
                 <v-list-item-avatar>
-                    <v-icon>{{item.icon}}</v-icon>
+                    <v-icon color="indigo">{{item.icon}}</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
                     {{ $t(item.name) }}

@@ -24,7 +24,7 @@
   <v-app>
     <v-sheet
       class="overflow-hidden">
-      <v-system-bar color="primary">
+      <v-system-bar dark color="indigo darken-4">
         <v-icon @click="drawer=!drawer">mdi-menu</v-icon>
         <span>
           {{$t(app)}}
