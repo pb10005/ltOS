@@ -19,7 +19,7 @@
 <template>
   <section>
       <v-row>
-        <v-col>
+        <v-col cols="12" sm="6">
           <v-card shaped>
             <v-card-title>
               {{ $t('local')}}
@@ -38,7 +38,7 @@
             </v-card-actions>
           </v-card>
         </v-col>
-        <v-col>
+        <v-col cols="12" sm="6">
           <v-card shaped>
             <v-card-title>
               {{ $t('cloud') }}
