@@ -54,11 +54,13 @@ export default {
     },
     methods: {
         save() {
-            if(this.fileName)
-                this.$emit("save", {
-                    fileName: this.fileName,
-                    dir: this.selected
-                })
+            if(!this.fileName) return
+            this.$emit("save", {
+                fileName: this.fileName,
+                dir: this.selected
+            })
+            this.$router.push(this.localePath('explorer'))
+            
         }
     }
 }
