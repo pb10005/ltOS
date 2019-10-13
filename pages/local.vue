@@ -21,12 +21,12 @@
 <template>
     <section>
         <v-list>
-            <v-list-item v-for="(item, index) in items" :key="index">
+            <v-list-item @click="$router.push(localePath('item.link'))" v-for="(item, index) in items" :key="index">
                 <v-list-item-avatar>
                     <v-icon>{{item.icon}}</v-icon>
                 </v-list-item-avatar>
                 <v-list-item-content>
-                    <nuxt-link :to="localePath(item.link)">{{ $t(item.name) }}</nuxt-link>
+                    {{ $t(item.name) }}
                 </v-list-item-content>
             </v-list-item>
         </v-list>
