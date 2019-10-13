@@ -1,10 +1,14 @@
 <i18n>
 {
     "ja": {
-        "save": "保存"
+        "filename": "ファイル名",
+        "save": "保存",
+          "dir": "保存先"
     },
     "en": {
-        "save": "Save"
+        "filename": "File Name",
+        "save": "Save",
+        "dir": "Directory"
     }
 }
 </i18n>
@@ -18,8 +22,8 @@
               {{$t('save')}}
           </v-card-title>
           <v-content>
-              <v-text-field v-model="fileName" label="ファイル名"></v-text-field>
-              <v-subheader>保存先</v-subheader>
+              <v-text-field v-model="fileName" :label="$t('filename')"></v-text-field>
+              <v-subheader>{{$t('dir')}}</v-subheader>
               <v-radio-group v-model="selected">
                   <v-radio
                     v-for="(item, index) in directories"
