@@ -24,7 +24,7 @@
       @removeDirectory="removeDirectory"
       @openFile="openFile"
       @removeFile="removeFile"/>
-    <v-btn @click="$router.push('/local')">{{ $t('apps') }}</v-btn>
+    <v-btn @click="$router.push(localePath('local'))">{{ $t('apps') }}</v-btn>
   </section>
 </template>
 <script>
@@ -70,7 +70,7 @@ export default {
     },
     openFile(item) {
       this.$store.commit('fileSystem/setCurrentFile', item)
-      this.$router.push('/text_editor')
+      this.$router.push(this.localePath('text_editor'))
     },
     removeFile(item) {
       this.$store.commit('fileSystem/removeFile', item)

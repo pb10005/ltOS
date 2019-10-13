@@ -48,6 +48,7 @@ export default {
     [
       'nuxt-i18n',
       {
+        strategy: 'prefix_except_default',
         locales: [{ code: 'en', iso: 'en-US'}, {code: 'ja', iso: 'ja_JP'}],
         defaultLocale: 'en',
         vueI18n: {

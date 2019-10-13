@@ -28,6 +28,7 @@ function fetchData() {
 export const state = () => ({
   currentDirectory: root,
   currentFile: null,
+  root: root,
   trash: trash,
   nodes: fetchData()
 })
@@ -107,5 +108,8 @@ export const getters = {
   },
   currentFile({ currentFile }) {
     return currentFile
+  },
+  allDirectories({root, nodes}) {
+    return [root, ...nodes.filter(x => x.nodeType === 'directory')]
   }
 }

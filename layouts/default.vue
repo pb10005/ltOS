@@ -1,12 +1,20 @@
 <i18n>
 {
   "ja": {
+    "home": "ホーム",
+    "apps": "アプリ一覧",
     "explorer": "エクスプローラ",
-    "texteditor": "テキストエディタ"
+    "texteditor": "テキストエディタ",
+    "setting": "設定",
+    "markdown": "マークダウン"
   },
   "en": {
+    "home": "Home",
+    "apps": "Apps",
     "explorer": "Explorer",
-    "texteditor": "Text Editor"
+    "texteditor": "Text Editor",
+    "setting": "Settings",
+    "markdown": "Markdown Editor"
   }
 }
 </i18n>
@@ -32,7 +40,7 @@
             v-for="item in list"
             :key="item.title"
             link
-            @click="$router.push(item.link)"
+            @click="$router.push(localePath(item.link))"
           >
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
@@ -55,7 +63,7 @@ export default {
     },
     list() {
       return [
-        {title: "home", icon: "mdi-home", link: "/"}
+        {title: "home", icon: "mdi-home", link: "index"}
       ]
     } 
   },
