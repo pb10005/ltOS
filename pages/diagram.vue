@@ -28,6 +28,9 @@ export default {
         DiagramEditor,
         SaveFileDialog
     },
+    mounted() {
+        this.$store.commit("app/app", "diagram")
+    },
     data() {
         return {
             fileName: '',

@@ -5,6 +5,7 @@
     "apps": "アプリ一覧",
     "explorer": "エクスプローラ",
     "texteditor": "テキストエディタ",
+    "diagram": "グラフ描画",
     "setting": "設定",
     "markdown": "マークダウン"
   },
@@ -13,6 +14,7 @@
     "apps": "Apps",
     "explorer": "Explorer",
     "texteditor": "Text Editor",
+    "diagram": "Diagram Editor",
     "setting": "Settings",
     "markdown": "Markdown Editor"
   }
