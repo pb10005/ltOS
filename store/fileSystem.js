@@ -73,10 +73,29 @@ export const mutations = {
     state.currentFile.content = content
   },
   removeDirectory(state, node) {
-    node.parent = state.trash
+    if(state.currentDirectory === state.trash) {
+      state.nodes = state.nodes.filter(x => {
+        let tmp = x
+        let count = 0
+        while(tmp !== state.root) {
+          if(count++ >= 1000) break
+          if(tmp === node) {
+            return false
+          }
+          tmp = tmp.parent
+        }
+        return true
+      })
+    } else {
+      node.parent = state.trash
+    }
   },
   removeFile(state, node) {
-    node.parent = state.trash
+    if(state.currentDirectory === state.trash) {
+      state.nodes = state.nodes.filter(x => x !== node)
+    } else {
+      node.parent = state.trash
+    }
   },
   save(state) {
     const nodes = state.nodes.filter(x => !x.default).map(x => {
