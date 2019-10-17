@@ -1,3 +1,13 @@
+<i18n>
+{
+  "ja": {
+    "trash": "ごみ箱"
+  },
+  "en": {
+    "trash": "Trash Bin"
+  }
+}
+</i18n>
 <template>
     <v-list>
       <div
@@ -40,7 +50,7 @@
             <v-icon>{{getIcon(item.nodeType)}}</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
-            <span>{{item.name}}</span>
+            <span>{{$t("trash")}}</span>
           </v-list-item-content>
           <v-list-item-action v-if="!item.default">
             <v-btn icon @click="removeDirectory(item)">

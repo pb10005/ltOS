@@ -4,13 +4,15 @@
       "apps": "アプリ一覧",
       "explorer": "エクスプローラ",
       "save": "保存",
-        "path": "パス"
+        "path": "パス",
+      "trash": "ごみ箱"
     },
     "en": {
       "apps": "Apps",
       "explorer": "Explorer",
       "save": "Save",
-        "path": "Path"
+      "path": "Path",
+      "trash": "Trash Bin"
     }
 }
 </i18n>
