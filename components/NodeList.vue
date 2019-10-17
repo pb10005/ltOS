@@ -12,7 +12,7 @@
     <v-list>
       <div
         v-for="(item, index) in nodes"
-        :key="index">
+        :key="item.name">
         <v-list-item
           v-if="item.nodeType === 'directory'"
           @click="changeDirectory(item)">
