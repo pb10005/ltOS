@@ -65,7 +65,8 @@ export const mutations = {
   setCurrentFile(state, file) {
     state.currentFile = file
   },
-  commitFileChanged(state, content) {
+  commitFileChanged(state, {name, content}) {
+    state.currentFile.name = name
     state.currentFile.content = content
   },
   removeDirectory(state, node) {

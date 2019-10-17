@@ -53,6 +53,7 @@ export default {
                 name: payload.fileName,
                 content: content
             })
+            this.$store.commit("fileSystem/save")
             
         }
     }
