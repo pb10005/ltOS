@@ -52,6 +52,7 @@ export const mutations = {
     })
   },
   createDirectory (state, {name}) {
+    if(!name) return
     if(state.nodes.filter(x => x.name === name && x.parent === state.currentDirectory).length > 0) return
     state.nodes.push({
       nodeType: "directory",
@@ -66,6 +67,8 @@ export const mutations = {
     state.currentFile = file
   },
   commitFileChanged(state, {name, content}) {
+    if(!name) return
+    if(state.nodes.filter(x => x !== state.currentFile && x.name === name && x.parent === state.currentDirectory).length > 0) return
     state.currentFile.name = name
     state.currentFile.content = content
   },

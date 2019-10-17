@@ -29,8 +29,10 @@ export default {
     },
     mounted() {
         this.$store.commit("app/app", "texteditor")
-        if(this.file)
-            this.newContent = this.content
+        if(this.file !== {}) {
+            this.newName = this.file.name
+            this.newContent = this.file.content
+        }
     },
     destroyed() {
         this.$store.commit("fileSystem/setCurrentFile", null)
