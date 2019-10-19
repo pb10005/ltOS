@@ -19,7 +19,7 @@
 <template>
   <section>
     <v-text-field :label="$t('path')" v-model="path"></v-text-field>
-    <v-icon @click="up">mdi-arrow-collapse-up</v-icon>
+    <v-icon @click="up">mdi-arrow-up</v-icon>
     <create-directory-dialog @ok="createDirectory" />
     <create-file-dialog @ok="createFile" />
     <node-list
