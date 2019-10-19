@@ -98,13 +98,14 @@ export const mutations = {
     }
   },
   save(state) {
-    const nodes = state.nodes.filter(x => !x.default).map(x => {
+    let userNodes = state.nodes.filter(x => !x.default)
+    const nodes = userNodes.map(x => {
       return {
         nodeType: x.nodeType,
         name: x.name,
         default: x.default,
         content: x.content,
-        parentID: x.parent === state.trash ? -2 : state.nodes.indexOf(x.parent)
+        parentID: x.parent === state.trash ? -2 : userNodes.indexOf(x.parent)
       }
     })
     localStorage.setItem('fileSystem', JSON.stringify(nodes))
