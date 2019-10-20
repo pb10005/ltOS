@@ -71,6 +71,9 @@ export default {
             this.newContent = this.file.content || ''
         }
     },
+    destroyed() {
+        this.$store.commit("fileSystem/setCurrentFile", null)
+    },
     data() {
         return {
             newName: '',

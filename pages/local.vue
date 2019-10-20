@@ -53,7 +53,7 @@ export default {
                 {
                     name: 'markdown',
                     icon: 'mdi-markdown',
-                    link: 'explorer'
+                    link: 'markdown_editor'
                 },
                 {
                     name: 'diagram',

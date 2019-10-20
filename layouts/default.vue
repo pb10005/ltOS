@@ -34,6 +34,7 @@
         <Nuxt/>
       </v-container>
       <v-navigation-drawer
+        class="mx-auto"
         v-model="drawer"
         absolute
         temporary>
@@ -53,6 +54,11 @@
             </v-list-item-content>
           </v-list-item>
         </v-list>
+        <template v-slot:append>
+          <div class="pa-2">
+            <v-btn @click="$router.push('/')" color="indigo" dark block>Sign out</v-btn>
+          </div>
+        </template>
       </v-navigation-drawer>
     </v-sheet>
   </v-app>

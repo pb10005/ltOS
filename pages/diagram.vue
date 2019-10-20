@@ -42,6 +42,9 @@ export default {
             }
         }
     },
+    destroyed() {
+        this.$store.commit("fileSystem/setCurrentFile", null)
+    },
     computed: {
         file() {
             return this.$store.getters['fileSystem/currentFile'] || {}
