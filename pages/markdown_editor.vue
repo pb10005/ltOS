@@ -17,14 +17,14 @@
         <v-icon color="success" @click="overwrite" v-if="fileName">mdi-content-save</v-icon>
         <save-file-dialog @save="commit" v-if="!fileName"/>
         <v-row>
-            <v-col>
+            <v-col cols="12" sm="6">
                 <v-textarea
                     :label="$t('content')"
                     :rows="10"
                     v-model="content"
                     filled />
             </v-col>
-            <v-col>
+            <v-col cols="12" sm="6">
                 <v-card class="pa-5" tile>
                     <v-label>{{$t('preview')}}</v-label>
                     <section v-html="render" />
