@@ -74,7 +74,15 @@ export default {
     },
     openFile(item) {
       this.$store.commit('fileSystem/setCurrentFile', item)
-      this.$router.push(this.localePath('text_editor'))
+      const arr = item.name.split('.')
+      const ext = arr[arr.length - 1]
+      if(ext === 'md') {
+        this.$router.push(this.localePath('markdown_editor'))
+      } else if(ext === 'dgm') {
+        this.$router.push(this.localePath('diagram'))
+      } else {
+        this.$router.push(this.localePath('text_editor'))
+      }
     },
     removeFile(item) {
       this.$store.commit('fileSystem/removeFile', item)
