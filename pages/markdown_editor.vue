@@ -2,11 +2,13 @@
 {
     "ja": {
         "content": "マークダウン文書",
-        "preview": "プレビュー"
+        "preview": "プレビュー",
+        "filename": "ファイル名"
     },
     "en": {
         "content": "Content",
-        "preview": "Preview"
+        "preview": "Preview",
+          "filename": "File Name"
     }
 }
 </i18n>
@@ -16,17 +18,18 @@
         <v-icon color="secondary" @click="$router.go(-1)">mdi-arrow-left</v-icon>
         <v-icon color="success" @click="overwrite" v-if="fileName">mdi-content-save</v-icon>
         <save-file-dialog @save="commit" v-if="!fileName"/>
+        <v-icon color="indigo" @click="showPreview = !showPreview">mdi-eye</v-icon>
         <v-row>
-            <v-col cols="12" sm="6">
+            <v-col cols="12" v-if="!showPreview">
                 <v-textarea
                     :label="$t('content')"
                     :rows="10"
                     v-model="content"
                     filled />
             </v-col>
-            <v-col cols="12" sm="6">
+            <v-col cols="12">
+                <v-label>{{$t('preview')}}</v-label>
                 <v-card class="pa-5" tile>
-                    <v-label>{{$t('preview')}}</v-label>
                     <section v-html="render" />
                 </v-card>
             </v-col>
@@ -77,7 +80,9 @@ export default {
     data() {
         return {
             newName: '',
-            newContent: ''
+            newContent: '',
+            showPreview:false,
+            showEditor: true
         }
     },
     methods: {
