@@ -14,10 +14,9 @@
         v-for="(item, index) in nodes"
         :key="item.name">
         <v-list-item
-          v-if="item.nodeType === 'directory'"
-          @click="changeDirectory(item)">
+          @click="onClick(item)">
           <v-list-item-avatar>
-            <v-icon color="indigo lighten-1">{{getIcon(item.nodeType)}}</v-icon>
+            <v-icon :color="getIcon(item.nodeType, item.name).color">{{getIcon(item.nodeType, item.name).type}}</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
             <span>{{item.name}}</span>
@@ -25,36 +24,6 @@
           <v-list-item-action v-if="!item.default">
             <v-btn icon @click="removeDirectory(item)">
               <v-icon color="red lighten-1">mdi-delete</v-icon>
-            </v-btn>
-          </v-list-item-action>
-        </v-list-item>
-        <v-list-item
-          v-if="item.nodeType === 'file'"
-          @click="openFile(item)">
-          <v-list-item-avatar>
-            <v-icon color="lime accent-4">{{getIcon(item.nodeType)}}</v-icon>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <span>{{item.name}}</span>
-          </v-list-item-content>
-          <v-list-item-action v-if="!item.default">
-            <v-btn icon @click="removeFile(item)">
-              <v-icon color="red lighten-1">mdi-delete</v-icon>
-            </v-btn>
-          </v-list-item-action>
-        </v-list-item>
-        <v-list-item
-            v-if="item.nodeType === 'trash'"
-            @click="changeDirectory(item)">
-          <v-list-item-avatar>
-            <v-icon>{{getIcon(item.nodeType)}}</v-icon>
-          </v-list-item-avatar>
-          <v-list-item-content>
-            <span>{{$t("trash")}}</span>
-          </v-list-item-content>
-          <v-list-item-action v-if="!item.default">
-            <v-btn icon @click="removeDirectory(item)">
-              <v-icon color="grey lighten-1">mdi-delete</v-icon>
             </v-btn>
           </v-list-item-action>
         </v-list-item>
@@ -73,8 +42,15 @@ export default {
         }
     },
     methods: {
-        changeDirectory(name) {
-            this.$emit("changeDirectory", name)
+        onClick(item) {
+          if(['directory', 'trash'].includes(item.nodeType)) {
+            this.changeDirectory(item)
+          } else if(item.nodeType === 'file') {
+            this.openFile(item)
+          }
+        },
+        changeDirectory(dir) {
+            this.$emit("changeDirectory",dir)
         },
         openFile(file) {
             this.$emit("openFile", file)
@@ -85,13 +61,36 @@ export default {
         removeDirectory(directory) {
             this.$emit("removeDirectory", directory)
         },
-        getIcon(type) {
+        getIcon(type, name) {
             if(type === 'directory') {
-                return 'mdi-folder'
+                return {
+                  type: 'mdi-folder',
+                  color: 'indigo light-1'
+                }
             } else if(type === 'file') {
-                return 'mdi-file-document'
+              const arr = name.split('.')
+              const ext = arr[arr.length - 1]
+              if(ext === 'md') {
+                return {
+                  type:'mdi-markdown',
+                  color: 'lime accent-4'
+                }
+              } else if(ext === 'dgm') {
+                return {
+                  type: 'mdi-graph',
+                  color: 'lime accent-4'
+                }
+              } else {
+                return {
+                  type: 'mdi-file-document',
+                  color: 'lime accent-4'
+                }
+              }
             } else if(type === 'trash') {
-                return 'mdi-trash-can'
+                return {
+                  type: 'mdi-trash-can',
+                  color: 'indigo light-1'
+                }
             }
         }
     }
