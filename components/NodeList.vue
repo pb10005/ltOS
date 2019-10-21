@@ -65,7 +65,7 @@ export default {
             if(type === 'directory') {
                 return {
                   type: 'mdi-folder',
-                  color: 'indigo light-1'
+                  color: 'indigo lighten-1'
                 }
             } else if(type === 'file') {
               const arr = name.split('.')
@@ -89,7 +89,7 @@ export default {
             } else if(type === 'trash') {
                 return {
                   type: 'mdi-trash-can',
-                  color: 'indigo light-1'
+                  color: 'gray lighten-1'
                 }
             }
         }
