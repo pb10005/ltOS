@@ -31,7 +31,7 @@
               <v-btn
                 text
                 color="indigo"
-                @click="$router.push(localePath('local'))">
+                @click="$router.push(localePath('apps'))">
                 <v-icon>mdi-login</v-icon>
                 <span>{{$t('login')}}</span>
               </v-btn>
@@ -49,8 +49,8 @@
             <v-card-actions>
               <v-btn
                 text
-                disabled
-                color="indigo">
+                color="indigo"
+                @click="$router.push(localePath('login'))">
                 <v-icon>mdi-login</v-icon>
                 <span>{{$t('login')}}</span>
               </v-btn>

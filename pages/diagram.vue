@@ -78,7 +78,7 @@ export default {
                 name: payload.fileName,
                 content: content
             })
-            this.$store.commit("fileSystem/save")
+            this.$store.commit("fileSystem/save", this.$route.query.id || '')
             
         },
         overwrite() {
@@ -86,7 +86,7 @@ export default {
                 name: this.newName,
                 content: JSON.stringify(this.graph)
             })
-            this.$store.commit("fileSystem/save")
+            this.$store.commit("fileSystem/save", this.$route.query.id || '')
             this.$router.go(-1)
         }
     }

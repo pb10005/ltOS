@@ -21,7 +21,7 @@
 <template>
     <section>
         <v-list>
-            <v-list-item @click="$router.push(localePath(item.link))" v-for="(item, index) in items" :key="index">
+            <v-list-item @click="$router.push(localePath(item.link) + `?id=${id}`)" v-for="(item, index) in items" :key="index">
                 <v-list-item-avatar>
                     <v-icon color="indigo">{{item.icon}}</v-icon>
                 </v-list-item-avatar>
@@ -36,6 +36,11 @@
 export default {
     mounted() {
         this.$store.commit("app/app", "apps")
+    },
+    computed: {
+        id() {
+            return this.$route.query.id
+        }
     },
     data() {
         return {

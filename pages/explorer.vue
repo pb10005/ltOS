@@ -28,7 +28,7 @@
       @removeDirectory="removeDirectory"
       @openFile="openFile"
       @removeFile="removeFile"/>
-    <v-btn color="indigo" dark @click="$router.push(localePath('local'))">{{ $t('apps') }}</v-btn>
+    <v-btn color="indigo" dark @click="$router.push(localePath('apps'))">{{ $t('apps') }}</v-btn>
   </section>
 </template>
 <script>
@@ -43,6 +43,9 @@ export default {
   },
   mounted() {
     this.$store.commit("app/app", "explorer")
+    this.$store.dispatch("fileSystem/getFS", {
+      id: this.$route.query.id
+    })
   },
   computed: {
     path() {
@@ -50,6 +53,9 @@ export default {
     },
     nodes() {
       return this.$store.getters["fileSystem/currentDirectory"]
+    },
+    id() {
+      return this.$route.query.id || ''
     }
   },
   methods: {
@@ -63,34 +69,34 @@ export default {
       this.$store.commit("fileSystem/createDirectory", {
         name: directoryName
       })
-      this.$store.commit("fileSystem/save")
+      this.$store.commit("fileSystem/save", this.$route.query.id || '')
     },
     createFile(fileName) {
       this.$store.commit("fileSystem/createFile", {
         name: fileName,
         content: ''
       })
-      this.$store.commit("fileSystem/save")
+      this.$store.commit("fileSystem/save", this.$route.query.id || '')
     },
     openFile(item) {
       this.$store.commit('fileSystem/setCurrentFile', item)
       const arr = item.name.split('.')
       const ext = arr[arr.length - 1]
       if(ext === 'md') {
-        this.$router.push(this.localePath('markdown_editor'))
+        this.$router.push(this.localePath('markdown_editor') + `?id=${this.id}`)
       } else if(ext === 'dgm') {
-        this.$router.push(this.localePath('diagram'))
+        this.$router.push(this.localePath('diagram') + `?id=${this.id}`)
       } else {
-        this.$router.push(this.localePath('text_editor'))
+        this.$router.push(this.localePath('text_editor') + `?id=${this.id}`)
       }
     },
     removeFile(item) {
       this.$store.commit('fileSystem/removeFile', item)
-      this.$store.commit("fileSystem/save")
+      this.$store.commit("fileSystem/save", this.$route.query.id || '')
     },
     removeDirectory(item) {
       this.$store.commit('fileSystem/removeDirectory', item)
-      this.$store.commit("fileSystem/save")
+      this.$store.commit("fileSystem/save", this.$route.query.id || '')
     }
   }
 }

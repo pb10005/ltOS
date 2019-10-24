@@ -91,7 +91,7 @@ export default {
                 name: this.newName,
                 content: this.newContent
             })
-            this.$store.commit("fileSystem/save")
+            this.$store.commit("fileSystem/save", this.$route.query.id || '')
             this.$router.go(-1)
         },
         commit(payload) {
@@ -100,7 +100,7 @@ export default {
                 name: payload.fileName,
                 content: this.newContent
             })
-            this.$store.commit("fileSystem/save")
+            this.$store.commit("fileSystem/save", this.$route.query.id || '')
         }
     }
 }

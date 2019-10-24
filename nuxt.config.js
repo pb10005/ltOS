@@ -32,7 +32,9 @@ export default {
   ** Plugins to load before mounting the App
   ** Doc: https://nuxtjs.org/guide/plugins
   */
-  plugins: [],
+  plugins: [
+    '~/plugins/firebase'
+  ],
 
   pwa: {
     manifest: {
@@ -48,6 +50,7 @@ export default {
     // Doc: https://http.nuxtjs.org
     '@nuxt/http',
     '@nuxtjs/pwa',
+    '@nuxtjs/dotenv',
     [
       'nuxt-i18n',
       {

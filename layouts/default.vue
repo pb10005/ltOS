@@ -7,7 +7,8 @@
     "texteditor": "テキストエディタ",
     "diagram": "グラフ描画",
     "setting": "設定",
-    "markdown": "マークダウン"
+    "markdown": "マークダウン",
+    "login": "ログイン"
   },
   "en": {
     "home": "Home",
@@ -16,7 +17,8 @@
     "texteditor": "Text Editor",
     "diagram": "Diagram Editor",
     "setting": "Settings",
-    "markdown": "Markdown Editor"
+    "markdown": "Markdown Editor",
+    "login": "Sign In"
   }
 }
 </i18n>
@@ -56,7 +58,7 @@
         </v-list>
         <template v-slot:append>
           <div class="pa-2">
-            <v-btn @click="$router.push('/')" color="indigo" dark block>Sign out</v-btn>
+            <v-btn @click="signOut" color="indigo" dark block>Sign out</v-btn>
           </div>
         </template>
       </v-navigation-drawer>
@@ -78,6 +80,12 @@ export default {
   data() {
     return {
       drawer: false
+    }
+  },
+  methods: {
+    signOut() {
+      this.$store.dispatch('cloud/signOut')
+      this.$router.push(this.localePath("index"))
     }
   }
 }

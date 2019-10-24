@@ -1,3 +1,8 @@
+import firebase from '~/plugins/firebase.js'
+import { auth } from 'firebase';
+
+const db = firebase.firestore()
+
 const root = {
   name: 'root:',
   default: true
@@ -10,27 +15,14 @@ const trash = {
   parent: root
 }
 
-function fetchData() {
-  let data = JSON.parse(localStorage.getItem('fileSystem'))
-  if(!data) return [trash]
-  data.forEach(x => {
-    if(x.parentID >= 0)
-      x.parent = data[x.parentID]
-    else if(x.parentID === -2)
-      x.parent = trash
-    else
-      x.parent = root
-    delete x.parentID
-  })
-  return [trash, ...data]
-}
-
 export const state = () => ({
+  mode: 'local',
   currentDirectory: root,
   currentFile: null,
   root: root,
   trash: trash,
-  nodes: fetchData()
+  nodes: [],
+  currentID: ''
 })
 
 export const mutations = {
@@ -59,9 +51,6 @@ export const mutations = {
       name,
       parent: state.currentDirectory
     })
-  },
-  findByPath (state, path) {
-
   },
   setCurrentFile(state, file) {
     state.currentFile = file
@@ -97,7 +86,7 @@ export const mutations = {
       node.parent = state.trash
     }
   },
-  save(state) {
+  save(state, payload) {
     let userNodes = state.nodes.filter(x => !x.default)
     const nodes = userNodes.map(x => {
       return {
@@ -108,11 +97,56 @@ export const mutations = {
         parentID: x.parent === state.trash ? -2 : userNodes.indexOf(x.parent)
       }
     })
-    localStorage.setItem('fileSystem', JSON.stringify(nodes))
+    if(payload) {
+      db.collection('fss').doc(payload).set({
+        user: auth().currentUser.uid,
+        fs: JSON.stringify(nodes)
+      })
+    } else {
+      localStorage.setItem('fileSystem', JSON.stringify(nodes))
+    }
+  },
+  setCurrentID(state, payload) {
+    state.currentID = payload.id
+  },
+  setFS(state, payload) {
+    payload.forEach(x => {
+      if(x.parentID >= 0)
+        x.parent = data[x.parentID]
+      else if(x.parentID === -2)
+        x.parent = trash
+      else
+        x.parent = root
+      delete x.parentID
+    })
+    state.nodes = [trash, ...payload]
+    /*
+      let data = JSON.parse(localStorage.getItem('fileSystem'))
+      if(!data) return [trash]
+      data.forEach(x => {
+        if(x.parentID >= 0)
+          x.parent = data[x.parentID]
+        else if(x.parentID === -2)
+          x.parent = trash
+        else
+          x.parent = root
+        delete x.parentID
+      })
+      state.nodes = [trash, ...data]
+    */
   }
 }
 
 export const actions = {
+  getFS(context, payload){
+    db.collection('fss')
+    .doc(payload.id)
+    .get()
+    .then(doc => {
+        let data = JSON.parse(doc.data().fs)
+        context.commit('setFS', data)
+    })
+  }
 }
 
 export const getters = {
