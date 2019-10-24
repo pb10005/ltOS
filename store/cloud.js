@@ -34,6 +34,7 @@ export const actions =  {
                     })
     },
     async getFSsByUsername(context) {
+        if(!auth().currentUser) return 
         let fss = []
         await db.collection('fss')
             .where('user', '==', auth().currentUser.uid)
@@ -44,8 +45,12 @@ export const actions =  {
                         id: doc.id
                     })
                 })
+                context.commit('setFss', fss)
             })
-        context.commit('setFss', fss)
+            .catch(error => {
+                fss = []
+                context.commit('setFss', fss)
+            })
     },
     async getFSByID(context, payload) {
     },

@@ -36,7 +36,7 @@ export default {
                 email: this.email,
                 password: this.password
             })
-            this.$router.push(this.localePath('dashboard'))
+            this.$router.push(this.localePath('dashboard') )
         }
     }
 }
