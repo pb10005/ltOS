@@ -28,7 +28,7 @@
       @removeDirectory="removeDirectory"
       @openFile="openFile"
       @removeFile="removeFile"/>
-    <v-btn color="indigo" dark @click="$router.push(localePath('apps'))">{{ $t('apps') }}</v-btn>
+    <v-btn color="indigo" dark @click="$router.push(localePath('apps') + `?id=${id}`)">{{ $t('apps') }}</v-btn>
   </section>
 </template>
 <script>
