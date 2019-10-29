@@ -112,7 +112,7 @@ export const mutations = {
   setFS(state, payload) {
     payload.forEach(x => {
       if(x.parentID >= 0)
-        x.parent = data[x.parentID]
+        x.parent = payload[x.parentID]
       else if(x.parentID === -2)
         x.parent = trash
       else
