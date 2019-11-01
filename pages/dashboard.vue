@@ -5,7 +5,7 @@
             <span>Add Item</span>
         </v-btn>
         <div v-for="(item, index) in fss" :key="index">
-            <v-btn @click="openFS(item.id)">{{ item.id }}</v-btn>
+            <v-btn @click="openFS(item)">{{ item.name }}</v-btn>
         </div>
     </section>
 </template>
@@ -20,12 +20,13 @@ export default {
         }
     },
     methods: {
-        openFS(id) {
-            this.$store.commit('fileSystem/setCurrentID', {id})
+        openFS(item) {
+            this.$store.commit('fileSystem/setCurrentID', {id: item.id, name: item.name})
             this.$store.dispatch('fileSystem/getFS', {
-                id: id
+                id: item.id,
+                name: item.name
             })
-            this.$router.push(this.localePath('apps') + `?id=${id}`)
+            this.$router.push(this.localePath('apps') + `?id=${item.id}`)
         }
     }
 }

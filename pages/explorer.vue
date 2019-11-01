@@ -43,9 +43,6 @@ export default {
   },
   mounted() {
     this.$store.commit("app/app", "explorer")
-    this.$store.dispatch("fileSystem/getFS", {
-      id: this.$route.query.id
-    })
   },
   computed: {
     path() {

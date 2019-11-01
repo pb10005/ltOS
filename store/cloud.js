@@ -14,14 +14,20 @@ export const mutations = {
     },
     setFss(state, payload) {
         state.fss = payload
+    },
+    clearFss(state) {
+        state.fss = []
     }
 }
 
 export const actions =  {
     async auth(context, payload) {
         auth().signInWithEmailAndPassword(payload.email, payload.password)
+           .then(() => {
+               context.dispatch('getFSsByUserName')
+           })
             .catch(err => {
-                console.log(err)
+                context.commit('clearFss')
             })
     },
     async getUser(context, payload) {
@@ -42,7 +48,8 @@ export const actions =  {
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
                     fss.push({
-                        id: doc.id
+                        id: doc.id,
+                        name: doc.data().name
                     })
                 })
                 context.commit('setFss', fss)

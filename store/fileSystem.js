@@ -1,6 +1,8 @@
 import firebase from '~/plugins/firebase.js'
 import { auth } from 'firebase';
 
+import uuid from "uuid/v4"
+
 const db = firebase.firestore()
 
 const root = {
@@ -21,6 +23,7 @@ export const state = () => ({
   currentFile: null,
   root: root,
   trash: trash,
+  name: '',
   nodes: [],
   currentID: ''
 })
@@ -37,6 +40,7 @@ export const mutations = {
   createFile (state, {name, content}) {
     if(state.nodes.filter(x => x.name === name && x.parent === state.currentDirectory).length > 0) return
     state.nodes.push({
+      id: uuid(),
       nodeType: "file",
       name,
       content,
@@ -47,6 +51,7 @@ export const mutations = {
     if(!name) return
     if(state.nodes.filter(x => x.name === name && x.parent === state.currentDirectory).length > 0) return
     state.nodes.push({
+      id: uuid(),
       nodeType: "directory",
       name,
       parent: state.currentDirectory
@@ -90,15 +95,17 @@ export const mutations = {
     let userNodes = state.nodes.filter(x => !x.default)
     const nodes = userNodes.map(x => {
       return {
+        id: x.id,
         nodeType: x.nodeType,
         name: x.name,
         default: x.default,
         content: x.content,
-        parentID: x.parent === state.trash ? -2 : userNodes.indexOf(x.parent)
+        parentID: x.parent.id
       }
     })
     if(payload) {
       db.collection('fss').doc(payload).set({
+        name: state.name,
         user: auth().currentUser.uid,
         fs: JSON.stringify(nodes)
       })
@@ -108,18 +115,20 @@ export const mutations = {
   },
   setCurrentID(state, payload) {
     state.currentID = payload.id
+    state.name = payload.name
   },
   setFS(state, payload) {
     payload.forEach(x => {
-      if(x.parentID >= 0)
-        x.parent = payload[x.parentID]
-      else if(x.parentID === -2)
-        x.parent = trash
-      else
-        x.parent = root
-      delete x.parentID
+      if(x.parentID) {
+        x.parent = payload.find(y => y.id === x.parentID)
+      }
+      else {
+        x.parent = state.root
+      }
     })
     state.nodes = [trash, ...payload]
+    
+   // ローカル
     /*
       let data = JSON.parse(localStorage.getItem('fileSystem'))
       if(!data) return [trash]
@@ -134,6 +143,9 @@ export const mutations = {
       })
       state.nodes = [trash, ...data]
     */
+  },
+  setFSName(state, payload) {
+      state.name = payload
   }
 }
 
@@ -145,6 +157,7 @@ export const actions = {
     .then(doc => {
         let data = JSON.parse(doc.data().fs)
         context.commit('setFS', data)
+        context.commit('setFSName', payload.name)
     })
   }
 }
