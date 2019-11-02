@@ -35,6 +35,7 @@
 import CreateDirectoryDialog from '@/components/CreateDirectoryDialog'
 import CreateFileDialog from '@/components/CreateFileDialog'
 import NodeList from '@/components/NodeList'
+import { auth } from 'firebase'
 export default {
   components: {
     CreateDirectoryDialog,
@@ -42,7 +43,11 @@ export default {
     NodeList
   },
   mounted() {
+    if(!auth().currentUser) {
+        this.$router.push(this.localePath('login'))
+    }
     this.$store.commit("app/app", "explorer")
+    this.$store.dispatch("fileSystem/getFS", this.$route.query)
   },
   computed: {
     path() {

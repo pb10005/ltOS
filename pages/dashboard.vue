@@ -12,7 +12,7 @@
 <script>
 export default {
     mounted() {
-        this.$store.dispatch('cloud/getFSsByUsername')
+        // this.$store.dispatch('cloud/getFSsByUsername')
     },
     computed: {
         fss() {

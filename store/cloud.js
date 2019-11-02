@@ -21,7 +21,7 @@ export const mutations = {
 }
 
 export const actions =  {
-    async auth(context, payload) {
+    auth(context, payload) {
         auth().signInWithEmailAndPassword(payload.email, payload.password)
            .then(() => {
                context.dispatch('cloud/getFSsByUserName')
@@ -30,7 +30,7 @@ export const actions =  {
                 context.commit('clearFss')
             })
     },
-    async getUser(context, payload) {
+    getUser(context, payload) {
         let items = db.collection('users')
                     .get()
                     .then(querySnapshot => {
@@ -39,10 +39,10 @@ export const actions =  {
                         })
                     })
     },
-    async getFSsByUsername(context) {
+    getFSsByUsername(context) {
         if(!auth().currentUser) return 
         let fss = []
-        await db.collection('fss')
+        db.collection('fss')
             .where('user', '==', auth().currentUser.uid)
             .get()
             .then(querySnapshot => {
@@ -59,9 +59,7 @@ export const actions =  {
                 context.commit('setFss', fss)
             })
     },
-    async getFSByID(context, payload) {
-    },
-    async signOut() {
+    signOut() {
         auth().signOut()
     }
 } 

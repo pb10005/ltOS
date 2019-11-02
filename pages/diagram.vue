@@ -19,7 +19,7 @@
         <v-card tile color="indigo lighten-4" class="pa-3">
             <diagram-editor v-model="graph"/>
         </v-card>
-        <v-footer fixed><span>Powered by:</span><a target="_blank" href="https://github.com/pb10005/diagram-vue">diagram-vue</a></v-footer>
+        <v-footer app><span>Powered by:</span><a target="_blank" href="https://github.com/pb10005/diagram-vue">diagram-vue</a></v-footer>
     </section>
 </template>
 <script>

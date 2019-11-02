@@ -20,6 +20,7 @@
     </section>
 </template>
 <script>
+import { auth } from 'firebase'
 export default {
     mounted() {
         this.$store.commit('app/app', 'login')
@@ -36,7 +37,7 @@ export default {
                 email: this.email,
                 password: this.password
             })
-            this.$router.push(this.localePath('dashboard') )
+            this.$router.push(this.localePath('dashboard'))
         }
     }
 }
