@@ -45,8 +45,7 @@ export default {
         openFS(item) {
             this.$store.commit('fileSystem/setCurrentID', {id: item.id, name: item.name})
             this.$store.dispatch('fileSystem/getFS', {
-                id: item.id,
-                name: item.name
+                id: item.id
             })
             this.$router.push(this.localePath('apps') + `?id=${item.id}`)
         }

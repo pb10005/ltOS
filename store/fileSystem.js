@@ -106,11 +106,13 @@ export const mutations = {
       }
     })
     if(payload) {
-      db.collection('fss').doc(payload).set({
+      const data = {
         name: state.name,
         user: auth().currentUser.uid,
         fs: JSON.stringify(nodes)
-      })
+      }
+      console.log(data)
+      db.collection('fss').doc(payload).set(data)
     } else {
       localStorage.setItem('fileSystem', JSON.stringify(nodes))
     }
@@ -162,7 +164,6 @@ export const actions = {
     .then(doc => {
         let data = JSON.parse(doc.data().fs)
         context.commit('setFS', data)
-        context.commit('setFSName', payload.name)
     })
   }
 }
