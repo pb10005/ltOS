@@ -122,6 +122,15 @@ export const mutations = {
   setFS(state, payload) {
     payload.forEach(x => {
       if(x.parentID === 'root') {
+<<<<<<< HEAD
+=======
+        x.parent = state.root
+      } else if(x.parentID === 'trash') {
+        x.parent = state.trash
+      } else if(x.parentID) {
+        x.parent = payload.find(y => y.id === x.parentID)
+      } else {
+>>>>>>> 2b29ede702b36903c6a7aa3151d068da27ec86d5
         x.parent = state.root
       } else if(x.parentID === 'trash') {
         x.parent = state.trash

@@ -24,44 +24,45 @@
 </i18n>
 <template>
   <v-app>
-    <v-sheet
-      class="overflow-hidden">
-      <v-system-bar dark color="indigo darken-4">
-        <v-icon @click="drawer=!drawer">mdi-menu</v-icon>
+      <v-system-bar app dark color="indigo darken-4">
         <span>
           {{$t(app)}}
         </span>
       </v-system-bar>
-      <v-container class="full-height" fluid>
-        <Nuxt/>
-      </v-container>
-      <v-navigation-drawer
-        class="mx-auto"
-        v-model="drawer"
-        absolute
-        temporary>
-        <v-list dense>
-          <v-list-item
-            v-for="item in list"
-            :key="item.title"
-            link
-            @click="$router.push(localePath(item.link))"
-          >
-            <v-list-item-icon>
-              <v-icon>{{ item.icon }}</v-icon>
-            </v-list-item-icon>
+    <v-sheet
+      class="overflow-hidden">
+        <v-navigation-drawer
+          v-model="drawer"
+          dark
+          app
+          mini-variant
+          clipped-left
+          permanent>
+          <v-list dense>
+            <v-list-item
+              v-for="item in list"
+              :key="item.title"
+              link
+              @click="$router.push(localePath(item.link))"
+            >
+              <v-list-item-icon>
+                <v-icon>{{ item.icon }}</v-icon>
+              </v-list-item-icon>
 
-            <v-list-item-content>
-              <v-list-item-title>{{ item.title }}</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-        <template v-slot:append>
-          <div class="pa-2">
-            <v-btn @click="signOut" color="indigo" dark block>Sign out</v-btn>
-          </div>
-        </template>
-      </v-navigation-drawer>
+              <v-list-item-content>
+                <v-list-item-title>{{ item.title }}</v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
+          <template v-slot:append>
+            <div class="pa-1">
+              <v-btn @click="signOut" color="indigo accent-3" block>Sign out</v-btn>
+            </div>
+          </template>
+        </v-navigation-drawer>
+        <v-content class="full-height ma-2">
+          <Nuxt/>
+        </v-content>
     </v-sheet>
   </v-app>
 </template>
