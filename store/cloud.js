@@ -4,6 +4,7 @@ import { auth } from 'firebase';
 const db = firebase.firestore()
 
 export const state = () => ({
+    currentUser: {},
     users: [],
     fss: []
 })
@@ -11,6 +12,9 @@ export const state = () => ({
 export const mutations = {
     setUsers(state, payload) {
         state.users = payload
+    },
+    setCurrentUser(state, payload) {
+        state.currentUser = payload
     },
     setFss(state, payload) {
         state.fss = payload
@@ -28,6 +32,15 @@ export const actions =  {
            })
             .catch(err => {
                 context.commit('clearFss')
+            })
+    },
+    getCurrentUser(context, payload) {
+        if(!auth().currentUser) return
+        db.collection('users')
+            .doc(auth().currentUser.uid)
+            .get()
+            .then(doc => {
+                context.commit('setCurrentUser', doc.data())
             })
     },
     getUser(context, payload) {
@@ -65,6 +78,9 @@ export const actions =  {
 } 
 
 export const getters = {
+    currentUser({ currentUser }) {
+        return currentUser
+    },
     users({ users }) {
         return users
     },

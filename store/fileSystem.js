@@ -180,7 +180,7 @@ export const getters = {
     }
   },
   currentDirectory({ nodes, currentDirectory }) {
-    return nodes.filter(x => x.parent === currentDirectory)
+    return nodes.filter(x => x.parent.id === currentDirectory.id)
   },
   currentFile({ currentFile }) {
     return currentFile

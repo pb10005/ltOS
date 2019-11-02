@@ -33,7 +33,6 @@
       class="overflow-hidden">
         <v-navigation-drawer
           v-model="drawer"
-          dark
           app
           mini-variant
           clipped-left
@@ -55,9 +54,11 @@
             </v-list-item>
           </v-list>
           <template v-slot:append>
-            <div class="pa-1">
-              <v-btn @click="signOut" color="indigo accent-3" block>Sign out</v-btn>
-            </div>
+            <v-list-item @click="signOut">
+                <v-list-item-icon>
+                    <v-icon color="indigo accent-4">mdi-logout</v-icon>
+                </v-list-item-icon>
+            </v-list-item>
           </template>
         </v-navigation-drawer>
         <v-content class="full-height ma-2">
