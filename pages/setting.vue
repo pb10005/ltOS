@@ -10,7 +10,7 @@
 </i18n>
 <template>
     <section>
-        <v-icon @click="$router.push(localePath('apps'))">mdi-arrow-left</v-icon>
+        <v-icon @click="$router.push(localePath('apps')+ `?id=${id}`)">mdi-arrow-left</v-icon>
         <v-select
             :label="$t('lang')"
             v-model="locale"
@@ -24,6 +24,11 @@
 </template>
 <script>
 export default {
+    computed: {
+        id() {
+            return this.$route.query.id
+        }
+    },
     mounted() {
         this.$store.commit('app/app', 'setting')
     },

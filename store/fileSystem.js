@@ -6,11 +6,13 @@ import uuid from "uuid/v4"
 const db = firebase.firestore()
 
 const root = {
+  id: 'root',
   name: 'root:',
   default: true
 }
 
 const trash = {
+  id: 'trash',
   name: 'Trash Bin',
   nodeType: 'trash',
   default: true,
@@ -119,11 +121,12 @@ export const mutations = {
   },
   setFS(state, payload) {
     payload.forEach(x => {
-      if(x.parentID) {
-        x.parent = payload.find(y => y.id === x.parentID)
-      }
-      else {
+      if(x.parentID === 'root') {
         x.parent = state.root
+      } else if(x.parentID === 'trash') {
+        x.parent = state.trash
+      } else {
+        x.parent = payload.find(y => y.id === x.parentID)
       }
     })
     state.nodes = [trash, ...payload]

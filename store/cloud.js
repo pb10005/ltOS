@@ -24,7 +24,7 @@ export const actions =  {
     async auth(context, payload) {
         auth().signInWithEmailAndPassword(payload.email, payload.password)
            .then(() => {
-               context.dispatch('getFSsByUserName')
+               context.dispatch('cloud/getFSsByUserName')
            })
             .catch(err => {
                 context.commit('clearFss')
