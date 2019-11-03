@@ -2,29 +2,36 @@
 {
   "ja": {
     "home": "ホーム",
+    "dashboard": "ダッシュボード",
     "apps": "アプリ一覧",
     "explorer": "エクスプローラ",
     "texteditor": "テキストエディタ",
     "diagram": "グラフ描画",
     "setting": "設定",
     "markdown": "マークダウン",
-    "login": "ログイン"
+    "login": "ログイン",
+    "logout": "ログアウト"
   },
   "en": {
     "home": "Home",
+    "dashboard": "Dashboard",
     "apps": "Apps",
     "explorer": "Explorer",
     "texteditor": "Text Editor",
     "diagram": "Diagram Editor",
     "setting": "Settings",
     "markdown": "Markdown Editor",
-    "login": "Sign In"
+    "login": "Sign In",
+    "logout": "Sign Out"
   }
 }
 </i18n>
 <template>
   <v-app>
       <v-system-bar app dark color="indigo darken-4">
+        <v-icon v-if="!mini" @click="drawer=!drawer">
+            mdi-menu
+        </v-icon>
         <span>
           {{$t(app)}}
         </span>
@@ -34,9 +41,9 @@
         <v-navigation-drawer
           v-model="drawer"
           app
-          mini-variant
+          :mini-variant="mini"
           clipped-left
-          permanent>
+          :permanent="mini">
           <v-list dense>
             <v-list-item
               v-for="item in list"
@@ -58,6 +65,9 @@
                 <v-list-item-icon>
                     <v-icon color="indigo accent-4">mdi-logout</v-icon>
                 </v-list-item-icon>
+                <v-list-item-content>
+                    <v-list-item-title>{{ $t('logout') }}</v-list-item-title>
+                </v-list-item-content>
             </v-list-item>
           </template>
         </v-navigation-drawer>
@@ -75,9 +85,13 @@ export default {
     },
     list() {
       return [
-        {title: "home", icon: "mdi-home", link: "index"}
+        {title: "home", icon: "mdi-home", link: "index"},
+        {title: "dashboard", icon: "mdi-view-dashboard", link: "dashboard"}
       ]
-    } 
+    },
+    mini() {
+        return ['md', 'lg', 'xl'].includes(this.$vuetify.breakpoint.name)
+    }
   },
   data() {
     return {
