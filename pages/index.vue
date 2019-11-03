@@ -1,80 +1,54 @@
 <i18n>
 {
-  "ja": {
-    "local": "ローカル",
-    "cloud": "クラウド",
-    "login": "ログイン",
-    "local_detail": "ブラウザのストレージにデータを保存します",
-    "cloud_detail": "サーバーにデータを保存します"
-  },
-  "en": {
-    "local": "Local",
-    "cloud": "Cloud",
-    "login": "Log in",
-    "local_detail": "Save data on your computer",
-    "cloud_detail": "Sava data on the server"
-  }
+    "ja": {
+        "addins": "インスタンスを追加"
+    },
+    "en": {
+        "addins": "Add Instance"
+    }
 }
 </i18n>
 <template>
-  <section>
-      <v-row>
-        <v-col cols="12" sm="6">
-          <v-card shaped>
-            <v-card-title>
-              {{ $t('local')}}
-            </v-card-title>
-            <v-card-text>
-              {{$t('local_detail')}}
-            </v-card-text>
-            <v-card-actions>
-              <v-btn
-                text
-                color="indigo"
-                @click="$router.push(localePath('apps'))">
-                <v-icon>mdi-login</v-icon>
-                <span>{{$t('login')}}</span>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <v-card shaped>
-            <v-card-title>
-              {{ $t('cloud') }}
-            </v-card-title>
-            <v-card-text>
-              {{$t('cloud_detail')}}
-            </v-card-text>
-            <v-card-actions>
-              <v-btn
-                text
-                color="indigo"
-                @click="$router.push(localePath('login'))">
-                <v-icon>mdi-login</v-icon>
-                <span>{{$t('login')}}</span>
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-col>
-      </v-row>
-  </section>
+    <section>
+        <p>{{ currentUser.displayName }}</p>
+        <v-btn>
+            <v-icon>mdi-plus</v-icon>
+            <span>{{ $t('addins') }}</span>
+        </v-btn>
+        <v-list>
+            <v-list-item v-for="(item, index) in fss" :key="index" @click="openFS(item)">
+                <span>{{ item.name }}</span>
+                <v-divider v-if="index < fss.length - 1" />
+            </v-list-item>
+        </v-list>
+    </section>
 </template>
-
 <script>
-import Logo from '~/components/Logo.vue'
-import IconLink from '~/components/IconLink.vue'
-
+import { auth } from 'firebase'
 export default {
-  components: {
-    Logo,
-    IconLink
-  },
-  mounted() {
-    this.$store.commit('app/app', 'home')
-  }
+    mounted() {
+        if(!auth().currentUser) {
+            this.$router.push(this.localePath('login'))
+        }
+        this.$store.dispatch('cloud/getFSsByUsername')
+        this.$store.dispatch('cloud/getCurrentUser')
+    },
+    computed: {
+        currentUser() {
+            return this.$store.getters['cloud/currentUser']
+        },
+        fss() {
+            return this.$store.getters['cloud/fss']
+        }
+    },
+    methods: {
+        openFS(item) {
+            this.$store.commit('fileSystem/setCurrentID', {id: item.id, name: item.name})
+            this.$store.dispatch('fileSystem/getFS', {
+                id: item.id
+            })
+            this.$router.push(this.localePath('apps') + `?id=${item.id}`)
+        }
+    }
 }
 </script>
-
-<style scoped>
-</style>

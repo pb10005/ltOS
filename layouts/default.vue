@@ -85,7 +85,6 @@ export default {
     },
     list() {
       return [
-        {title: "home", icon: "mdi-home", link: "index"},
         {title: "dashboard", icon: "mdi-view-dashboard", link: "dashboard"}
       ]
     },
