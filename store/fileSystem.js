@@ -107,11 +107,10 @@ export const mutations = {
     })
     if(payload) {
       const data = {
-        name: state.name,
         user: auth().currentUser.uid,
         fs: JSON.stringify(nodes)
       }
-      db.collection('fss').doc(payload).set(data)
+      db.collection('fss').doc(payload).update(data)
     } else {
       localStorage.setItem('fileSystem', JSON.stringify(nodes))
     }
