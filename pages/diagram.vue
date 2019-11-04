@@ -27,6 +27,7 @@ import { DiagramEditor } from "diagram-vue"
 import SaveFileDialog from '@/components/SaveFileDialog'
 import "diagram-vue/dist/diagram.css";
 export default {
+    middleware: ['auth'],
     components: {
         DiagramEditor,
         SaveFileDialog

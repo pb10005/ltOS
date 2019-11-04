@@ -34,6 +34,7 @@
 </template>
 <script>
 export default {
+    middleware: ['auth'],
     mounted() {
         this.$store.commit("app/app", "apps")
     },

@@ -26,10 +26,8 @@
 <script>
 import { auth } from 'firebase'
 export default {
+    middleware: ['auth'],
     mounted() {
-        if(!auth().currentUser) {
-            this.$router.push(this.localePath('login'))
-        }
         this.$store.dispatch('cloud/getFSsByUsername')
         this.$store.dispatch('cloud/getCurrentUser')
     },

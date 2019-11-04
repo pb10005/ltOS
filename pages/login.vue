@@ -2,20 +2,23 @@
 {
     "ja": {
         "email": "メールアドレス",
-        "password": "パスワード"
+        "password": "パスワード",
+        "login": "ログイン"
     },
     "en": {
         "email": "E-mail",
-        "password": "Password"
+        "password": "Password",
+        "login": "Sign In"
     }
 }
 </i18n>
 <template>
     <section>
-        <v-form>
+        <p>{{error}}</p>
+        <v-form @submit.prevent="submit">
             <v-text-field v-model="email" :label="$t('email')" />
             <v-text-field v-model="password" type="password" :label="$t('password')"/>
-            <v-btn color="indigo" dark @click="submit">Submit</v-btn>
+            <v-btn color="indigo" type="submit" dark>{{$t('login')}}</v-btn>
         </v-form>
     </section>
 </template>
@@ -28,7 +31,8 @@ export default {
     data() {
         return {
             email: '',
-            password: ''
+            password: '',
+            error: ''
         }
     },
     methods: {
@@ -37,7 +41,12 @@ export default {
                 email: this.email,
                 password: this.password
             })
-            this.$router.push(this.localePath('dashboard'))
+            .then(() => {
+                this.$router.push(this.localePath('dashboard'))
+            })
+            .catch(() => {
+                this.error = 'failed'
+            })
         }
     }
 }

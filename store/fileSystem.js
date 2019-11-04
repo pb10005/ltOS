@@ -111,7 +111,6 @@ export const mutations = {
         user: auth().currentUser.uid,
         fs: JSON.stringify(nodes)
       }
-      console.log(data)
       db.collection('fss').doc(payload).set(data)
     } else {
       localStorage.setItem('fileSystem', JSON.stringify(nodes))

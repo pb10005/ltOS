@@ -56,7 +56,7 @@
               </v-list-item-icon>
 
               <v-list-item-content>
-                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                <v-list-item-title>{{ $t(item.title) }}</v-list-item-title>
               </v-list-item-content>
             </v-list-item>
           </v-list>
@@ -85,7 +85,8 @@ export default {
     },
     list() {
       return [
-        {title: "dashboard", icon: "mdi-view-dashboard", link: "dashboard"}
+        {title: "dashboard", icon: "mdi-view-dashboard", link: "index"},
+        {title: "setting", icon:"mdi-settings", link: "setting"}
       ]
     },
     mini() {

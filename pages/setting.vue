@@ -10,7 +10,7 @@
 </i18n>
 <template>
     <section>
-        <v-icon @click="$router.push(localePath('apps')+ `?id=${id}`)">mdi-arrow-left</v-icon>
+        <v-icon @click="$router.go(-1)">mdi-arrow-left</v-icon>
         <v-select
             :label="$t('lang')"
             v-model="locale"

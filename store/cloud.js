@@ -1,5 +1,6 @@
 import firebase from '~/plugins/firebase.js'
 import { auth } from 'firebase';
+import { resolve } from 'path';
 
 const db = firebase.firestore()
 
@@ -26,22 +27,28 @@ export const mutations = {
 
 export const actions =  {
     auth(context, payload) {
-        auth().signInWithEmailAndPassword(payload.email, payload.password)
-           .then(() => {
-               context.dispatch('cloud/getFSsByUserName')
-           })
-            .catch(err => {
-                context.commit('clearFss')
-            })
+        return new Promise((resolve, reject) => {
+            auth().signInWithEmailAndPassword(payload.email, payload.password)
+                .then(() => {
+                    resolve()
+                })
+                .catch(err => {
+                    context.commit('clearFss')
+                    reject()
+                })
+
+        })
     },
     getCurrentUser(context, payload) {
-        if(!auth().currentUser) return
-        db.collection('users')
-            .doc(auth().currentUser.uid)
-            .get()
-            .then(doc => {
-                context.commit('setCurrentUser', doc.data())
-            })
+        auth().onAuthStateChanged((user) => {
+            if(!user) return
+            db.collection('users')
+                .doc(user.uid)
+                .get()
+                .then(doc => {
+                    context.commit('setCurrentUser', doc.data())
+                })
+        })
     },
     getUser(context, payload) {
         let items = db.collection('users')
@@ -53,24 +60,25 @@ export const actions =  {
                     })
     },
     getFSsByUsername(context) {
-        if(!auth().currentUser) return 
-        let fss = []
-        db.collection('fss')
-            .where('user', '==', auth().currentUser.uid)
-            .get()
-            .then(querySnapshot => {
-                querySnapshot.forEach(doc => {
-                    fss.push({
-                        id: doc.id,
-                        name: doc.data().name
+        auth().onAuthStateChanged((user) => {
+            let fss = []
+            db.collection('fss')
+                .where('user', '==', user.uid)
+                .get()
+                .then(querySnapshot => {
+                    querySnapshot.forEach(doc => {
+                        fss.push({
+                            id: doc.id,
+                            name: doc.data().name
+                        })
                     })
+                    context.commit('setFss', fss)
                 })
-                context.commit('setFss', fss)
-            })
-            .catch(error => {
-                fss = []
-                context.commit('setFss', fss)
-            })
+                .catch(error => {
+                    fss = []
+                    context.commit('setFss', fss)
+                })
+        })
     },
     signOut() {
         auth().signOut()

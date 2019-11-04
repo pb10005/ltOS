@@ -40,6 +40,7 @@
 import marked from 'marked'
 import SaveFileDialog from '@/components/SaveFileDialog'
 export default {
+    middleware: ['auth'],
     components: {
         SaveFileDialog
     },
