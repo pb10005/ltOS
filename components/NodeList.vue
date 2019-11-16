@@ -14,9 +14,10 @@
         v-for="(item, index) in nodes"
         :key="item.name">
         <v-list-item>
-          <v-list-item-avatar>
-            <v-icon :color="getIcon(item.nodeType, item.name).color">{{getIcon(item.nodeType, item.name).type}}</v-icon>
-          </v-list-item-avatar>
+        <v-list-item-avatar>
+            <v-icon :color="getIcon(item.nodeType, item.name).color"
+                @click="onClick(item)">{{getIcon(item.nodeType, item.name).type}}</v-icon>
+        </v-list-item-avatar>
           <v-list-item
             @click="onClick(item)">
             <span>{{item.name}}</span>
