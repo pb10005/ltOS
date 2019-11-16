@@ -22,18 +22,21 @@
     <v-icon @click="up">mdi-arrow-up</v-icon>
     <create-directory-dialog @ok="createDirectory" />
     <create-file-dialog @ok="createFile" />
+    <remove-node-dialog :dialog='removeFileDialog' @ok="removeFile" @cancel="removeFileDialog=false"/>
+    <remove-node-dialog :dialog='removeDirectoryDialog' @ok="removeDirectory" @cancel="removeDirectoryDialog=false"/>
     <node-list
       :nodes="nodes"
       @changeDirectory="changeDirectory"
-      @removeDirectory="removeDirectory"
+      @removeDirectory="(item) => {removeCandidate=item; removeDirectoryDialog = true}"
       @openFile="openFile"
-      @removeFile="removeFile"/>
+      @removeFile="(item) => {removeCandidate=item; removeFileDialog = true}"/>
     <v-btn color="indigo" dark @click="$router.push(localePath('apps') + `?id=${id}`)">{{ $t('apps') }}</v-btn>
   </section>
 </template>
 <script>
 import CreateDirectoryDialog from '@/components/CreateDirectoryDialog'
 import CreateFileDialog from '@/components/CreateFileDialog'
+import RemoveNodeDialog from '@/components/RemoveNodeDialog'
 import NodeList from '@/components/NodeList'
 import { auth } from 'firebase'
 export default {
@@ -41,6 +44,7 @@ export default {
   components: {
     CreateDirectoryDialog,
     CreateFileDialog,
+    RemoveNodeDialog,
     NodeList
   },
   mounted() {
@@ -57,6 +61,13 @@ export default {
     id() {
       return this.$route.query.id || ''
     }
+  },
+  data() {
+      return {
+          removeFileDialog: false,
+          removeDirectoryDialog: false,
+          removeCandidate: null
+      }
   },
   methods: {
     up() {
@@ -90,13 +101,15 @@ export default {
         this.$router.push(this.localePath('text_editor') + `?id=${this.id}`)
       }
     },
-    removeFile(item) {
-      this.$store.commit('fileSystem/removeFile', item)
+    removeFile() {
+      this.$store.commit('fileSystem/removeFile', this.removeCandidate)
       this.$store.commit("fileSystem/save", this.$route.query.id || '')
+      this.removeFileDialog = false
     },
-    removeDirectory(item) {
-      this.$store.commit('fileSystem/removeDirectory', item)
+    removeDirectory() {
+      this.$store.commit('fileSystem/removeDirectory', this.removeCandidate)
       this.$store.commit("fileSystem/save", this.$route.query.id || '')
+      this.removeDirectoryDialog = false
     }
   }
 }

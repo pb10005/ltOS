@@ -13,17 +13,17 @@
       <div
         v-for="(item, index) in nodes"
         :key="item.name">
-        <v-list-item
-          @click="onClick(item)">
+        <v-list-item>
           <v-list-item-avatar>
             <v-icon :color="getIcon(item.nodeType, item.name).color">{{getIcon(item.nodeType, item.name).type}}</v-icon>
           </v-list-item-avatar>
-          <v-list-item-content>
+          <v-list-item
+            @click="onClick(item)">
             <span>{{item.name}}</span>
-          </v-list-item-content>
+          </v-list-item>
           <v-list-item-action v-if="!item.default">
             <v-btn icon @click="removeDirectory(item)">
-              <v-icon color="red lighten-1">mdi-delete</v-icon>
+                <v-icon color="red lighten-1">mdi-delete</v-icon>
             </v-btn>
           </v-list-item-action>
         </v-list-item>

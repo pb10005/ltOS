@@ -65,12 +65,7 @@ export default {
                     name: 'diagram',
                     icon: 'mdi-graph',
                     link: 'diagram'
-                },
-                {
-                    name: 'setting',
-                    icon: 'mdi-settings',
-                    link: 'setting'
-                },
+                }
             ]
         }
     }
