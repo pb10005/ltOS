@@ -20,53 +20,49 @@ const trash = {
 }
 
 export const state = () => ({
-  mode: 'local',
   currentDirectory: root,
   currentFile: null,
   root: root,
   trash: trash,
   name: '',
   nodes: [],
-  currentID: ''
+  currentID: '',
+  ownerID: '',
+  owner: ''
 })
 
 export const mutations = {
-  up(state) {
-    if(state.currentDirectory.name === 'root:') return
-    if(state.currentDirectory.parent === null) return
-    state.currentDirectory = state.currentDirectory.parent
-  },
-  changeDirectory(state, dir) {
-    state.currentDirectory = dir
-  },
-  createFile (state, {name, content}) {
-    if(state.nodes.filter(x => x.name === name && x.parent === state.currentDirectory).length > 0) return
-    state.nodes.push({
-      id: uuid(),
-      nodeType: "file",
-      name,
-      content,
-      parent: state.currentDirectory
-    })
-  },
-  createDirectory (state, {name}) {
+  createFile (state, {name, content, instanceID, parentID}) {
     if(!name) return
-    if(state.nodes.filter(x => x.name === name && x.parent === state.currentDirectory).length > 0) return
-    state.nodes.push({
-      id: uuid(),
-      nodeType: "directory",
-      name,
-      parent: state.currentDirectory
-    })
+    const id = uuid()
+    db.collection("fss")
+        .doc(instanceID)
+        .collection("nodes")
+        .doc(id)
+        .set({
+            id,
+            nodeType: "file",
+            name,
+            content,
+            parentID
+        })
+  },
+  createDirectory (state, {name, instanceID, parentID}) {
+    if(!name) return
+    const id = uuid()
+    db.collection("fss")
+        .doc(instanceID)
+        .collection("nodes")
+        .doc(id)
+        .set({
+            id,
+            nodeType: "directory",
+            name,
+            parentID
+        })
   },
   setCurrentFile(state, file) {
     state.currentFile = file
-  },
-  commitFileChanged(state, {name, content}) {
-    if(!name) return
-    if(state.nodes.filter(x => x !== state.currentFile && x.name === name && x.parent === state.currentDirectory).length > 0) return
-    state.currentFile.name = name
-    state.currentFile.content = content
   },
   removeDirectory(state, node) {
     if(state.currentDirectory === state.trash) {
@@ -93,80 +89,101 @@ export const mutations = {
       node.parent = state.trash
     }
   },
-  save(state, payload) {
-    let userNodes = state.nodes.filter(x => !x.default)
-    const nodes = userNodes.map(x => {
-      return {
-        id: x.id,
-        nodeType: x.nodeType,
-        name: x.name,
-        default: x.default,
-        content: x.content,
-        parentID: x.parent.id
-      }
-    })
-    if(payload) {
-      const data = {
-        user: auth().currentUser.uid,
-        fs: JSON.stringify(nodes)
-      }
-      db.collection('fss').doc(payload).update(data)
-    } else {
-      localStorage.setItem('fileSystem', JSON.stringify(nodes))
-    }
-  },
   setCurrentID(state, payload) {
     state.currentID = payload.id
     state.name = payload.name
   },
   setFS(state, payload) {
-    payload.forEach(x => {
-      if(x.parentID === 'root') {
-        x.parent = state.root
-      } else if(x.parentID === 'trash') {
-        x.parent = state.trash
-      } else if(x.parentID) {
-        x.parent = payload.find(y => y.id === x.parentID)
-      } else {
-        x.parent = state.root
-      }
-    })
-    state.nodes = [trash, ...payload]
-    
-   // ローカル
-    /*
-      let data = JSON.parse(localStorage.getItem('fileSystem'))
-      if(!data) return [trash]
-      data.forEach(x => {
-        if(x.parentID >= 0)
-          x.parent = data[x.parentID]
-        else if(x.parentID === -2)
-          x.parent = trash
-        else
-          x.parent = root
-        delete x.parentID
-      })
-      state.nodes = [trash, ...data]
-    */
+    state.nodes = payload
   },
   setFSName(state, payload) {
       state.name = payload
+  },
+  setOwner(state, payload) {
+      state.owner = payload.owner
+      state.ownerID = payload.ownerID
   }
 }
 
 export const actions = {
   getFS(context, payload){
-    db.collection('fss')
+    const instance = db.collection('fss')
     .doc(payload.id)
-    .get()
+    instance.get()
     .then(doc => {
-        let data = JSON.parse(doc.data().fs)
-        context.commit('setFS', data)
+        context.commit('setFSName', doc.data().name)
+        db.collection('users')
+            .doc(doc.data().user)
+            .get()
+            .then(userRef => {
+                context.commit('setOwner', {
+                    owner: userRef.data().displayName,
+                    ownerID: doc.data().user
+                })
+            })
     })
+  },
+  getFile(context, payload) {
+      return new Promise((resolve, reject) => {
+        db.collection('fss')
+            .doc(payload.instanceID)
+            .collection('nodes')
+            .doc(payload.fileID)
+            .get()
+            .then(doc => {
+                context.commit('setCurrentFile', doc.data())
+                resolve()
+            })
+            .catch(() => {
+                reject()
+            })
+      })
+  },
+  updateFile(context, { instanceID, fileID, name, content }) {
+      db.collection('fss')
+        .doc(instanceID)
+        .collection('nodes')
+        .doc(fileID)
+        .update({
+            name,
+            content
+        })
+  },
+  getNode(context, payload) {
+      return new Promise((resolve, reject) => {
+          db.collection('fss')
+            .doc(payload.instanceID)
+            .collection('nodes')
+            .doc(payload.nodeID)
+            .get()
+            .then(doc => {
+                resolve(doc.data())
+            })
+            .catch(() => {
+                reject()
+            })
+      })
+  },
+  async fetchNodesByParentID(context, payload) {
+      let nodes = []
+      await db.collection('fss')
+        .doc(payload.instanceID)
+        .collection('nodes')
+        .where('parentID', '==', payload.dirID)
+        .get()
+        .then(docs => {
+            docs.forEach(doc => {
+                nodes.push(doc.data())
+            })
+        })
+      context.commit('setFS', nodes)
   }
 }
 
 export const getters = {
+  instanceName({ name }) {
+      return name
+  },
   currentDirectoryPath({currentDirectory}) {
     let path = ''
     let dir = currentDirectory
@@ -179,12 +196,19 @@ export const getters = {
     }
   },
   currentDirectory({ nodes, currentDirectory }) {
-    return nodes.filter(x => x.parent.id === currentDirectory.id)
+    return nodes
   },
   currentFile({ currentFile }) {
     return currentFile
   },
   allDirectories({root, nodes}) {
     return [root, ...nodes.filter(x => x.nodeType === 'directory')]
+  },
+  owner({ owner, ownerID }) {
+      return {
+          name: owner,
+          id: ownerID
+      }
   }
+
 }

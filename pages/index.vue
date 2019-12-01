@@ -10,16 +10,24 @@
 </i18n>
 <template>
     <section>
-        <p>{{ currentUser.displayName }}</p>
-        <v-btn>
+        <v-card outlined>
+            <v-list-item>
+                <v-list-item-content>
+                    <v-list-item-title class="headline mb-1">{{ currentUser.displayName }}</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
+        </v-card>
+        <v-btn @click="$router.push(localePath('add_instance'))">
             <v-icon>mdi-plus</v-icon>
             <span>{{ $t('addins') }}</span>
         </v-btn>
         <v-list>
-            <v-list-item v-for="(item, index) in fss" :key="index" @click="openFS(item)">
-                <span>{{ item.name }}</span>
+            <div v-for="(item, index) in fss" :key="index" >
+                <v-list-item @click="openFS(item)">
+                    <v-text>{{ item.name }}</v-text>
+                </v-list-item>
                 <v-divider v-if="index < fss.length - 1" />
-            </v-list-item>
+            </div>
         </v-list>
     </section>
 </template>

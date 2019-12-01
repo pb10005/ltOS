@@ -45,6 +45,12 @@ export default {
         SaveFileDialog
     },
     computed: {
+        id() {
+            return this.$route.query.id
+        },
+        fileID() {
+            return this.$route.query.file
+        },
         render() {
             return marked(this.newContent, {sanitize: true})
         },
@@ -70,10 +76,16 @@ export default {
     },
     mounted() {
         this.$store.commit("app/app", "markdown")
-        if(this.file !== {}) {
-            this.newName = this.file.name || ''
-            this.newContent = this.file.content || ''
-        }
+        this.$store.dispatch('fileSystem/getFile', {
+            instanceID: this.id,
+            fileID: this.fileID
+        })
+        .then(() => {
+            if(this.file !== {}) {
+                this.newName = this.file.name
+                this.newContent = this.file.content
+            }
+        })
     },
     destroyed() {
         this.$store.commit("fileSystem/setCurrentFile", null)
@@ -88,18 +100,19 @@ export default {
     },
     methods: {
         overwrite() {
-            this.$store.commit("fileSystem/commitFileChanged", {
+            this.$store.dispatch("fileSystem/updateFile", {
+                instanceID: this.id,
+                fileID: this.fileID,
                 name: this.newName,
                 content: this.newContent
             })
-            this.$store.commit("fileSystem/save", this.$route.query.id || '')
-            this.$router.go(-1)
         },
         commit(payload) {
             this.$store.commit("fileSystem/changeDirectory", payload.dir)
             this.$store.commit("fileSystem/createFile", {
                 name: payload.fileName,
-                content: this.newContent
+                content: this.newContent,
+                instanceID: this.$route.query.id
             })
             this.$store.commit("fileSystem/save", this.$route.query.id || '')
         }

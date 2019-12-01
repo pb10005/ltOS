@@ -16,7 +16,7 @@
         <v-icon color="secondary" @click="$router.go(-1)">mdi-arrow-left</v-icon>
         <v-icon color="success" @click="overwrite" v-if="fileName">mdi-content-save</v-icon>
         <save-file-dialog @save="commit" v-if="!fileName" />
-        <v-card tile color="indigo lighten-4" class="pa-3">
+        <v-card tile color="gray lighten-4" class="scroll pa-3">
             <diagram-editor v-model="graph"/>
         </v-card>
         <v-footer app><span>Powered by:</span><a target="_blank" href="https://github.com/pb10005/diagram-vue">diagram-vue</a></v-footer>
@@ -34,19 +34,33 @@ export default {
     },
     mounted() {
         this.$store.commit("app/app", "diagram")
-        if(this.file !== {}) {
-            this.newName = this.file.name || ''
-            try {
-                this.graph = JSON.parse(this.file.content) || ''
-            } catch (err) {
-                console.log('Error parsing json')
+        this.$store.dispatch('fileSystem/getFile', {
+            instanceID: this.id,
+            fileID: this.fileID
+        })
+        .then(() => {
+            if(this.file !== {}) {
+                if(this.file !== {}) {
+                    this.newName = this.file.name || ''
+                    try {
+                        this.graph = JSON.parse(this.file.content) || ''
+                    } catch (err) {
+                        console.log('Error parsing json')
+                    }
+                }
             }
-        }
+        })
     },
     destroyed() {
         this.$store.commit("fileSystem/setCurrentFile", null)
     },
     computed: {
+        id() {
+            return this.$route.query.id
+        },
+        fileID() {
+            return this.$route.query.file
+        },
         file() {
             return this.$store.getters['fileSystem/currentFile'] || {}
         },
@@ -77,19 +91,26 @@ export default {
             this.$store.commit("fileSystem/changeDirectory", payload.dir)
             this.$store.commit("fileSystem/createFile", {
                 name: payload.fileName,
-                content: content
+                content: content,
+                instanceID: this.$route.query.id
             })
             this.$store.commit("fileSystem/save", this.$route.query.id || '')
             
         },
         overwrite() {
-            this.$store.commit("fileSystem/commitFileChanged", {
+            const content = JSON.stringify(this.graph)
+            this.$store.dispatch("fileSystem/updateFile", {
+                instanceID: this.id,
+                fileID: this.fileID,
                 name: this.newName,
-                content: JSON.stringify(this.graph)
+                content: content
             })
-            this.$store.commit("fileSystem/save", this.$route.query.id || '')
-            this.$router.go(-1)
         }
     }
 }
 </script>
+<style scoped>
+.scroll {
+    overflow: scroll;
+}
+</style>

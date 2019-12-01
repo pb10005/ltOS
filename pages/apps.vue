@@ -20,6 +20,14 @@
 </i18n>
 <template>
     <section>
+        <v-card outlined>
+            <v-list-item three-line>
+                <v-list-item-content>
+                    <v-list-item-title class="headline mb-1">{{ instanceName }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ owner.name }}</v-list-item-subtitle>
+                </v-list-item-content>
+            </v-list-item>
+        </v-card>
         <v-list>
             <v-list-item @click="$router.push(localePath(item.link) + `?id=${id}`)" v-for="(item, index) in items" :key="index">
                 <v-list-item-avatar>
@@ -37,10 +45,17 @@ export default {
     middleware: ['auth'],
     mounted() {
         this.$store.commit("app/app", "apps")
+        this.$store.dispatch("fileSystem/getFS", { id: this.id })
     },
     computed: {
         id() {
             return this.$route.query.id
+        },
+        owner() {
+            return this.$store.getters['fileSystem/owner']
+        },
+        instanceName() {
+            return this.$store.getters['fileSystem/instanceName']
         }
     },
     data() {

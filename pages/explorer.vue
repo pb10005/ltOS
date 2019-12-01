@@ -49,56 +49,89 @@ export default {
   },
   mounted() {
     this.$store.commit("app/app", "explorer")
-    this.$store.dispatch("fileSystem/getFS", this.$route.query)
+    this.fetchNodes()
   },
   computed: {
-    path() {
-      return this.$store.getters["fileSystem/currentDirectoryPath"]
-    },
     nodes() {
       return this.$store.getters["fileSystem/currentDirectory"]
     },
     id() {
       return this.$route.query.id || ''
+    },
+    dirID() {
+        return this.$route.query.dir || 'root'
     }
+  },
+  watch: {
+      $route() {
+          this.fetchNodes()
+      }
   },
   data() {
       return {
+          path: '',
           removeFileDialog: false,
           removeDirectoryDialog: false,
           removeCandidate: null
       }
   },
   methods: {
-    up() {
-      this.$store.commit("fileSystem/up")
+    fetchNodes() {
+        this.$store.dispatch("fileSystem/fetchNodesByParentID", {
+            instanceID: this.id,
+            dirID: this.dirID
+        })
+        this.$store.dispatch("fileSystem/getNode", {
+            instanceID: this.id,
+            nodeID: this.dirID
+        })
+        .then(node => {
+            this.path = node.name
+        })
+        .catch(() => {
+            this.path = 'root'
+        })
     },
-    changeDirectory(name) {
-      this.$store.commit("fileSystem/changeDirectory", name)
+    up() {
+        if(this.dirID === 'root') return
+        this.$store.dispatch("fileSystem/getNode", {
+            instanceID: this.id,
+            nodeID: this.dirID
+        })
+        .then(node => {
+            if(!node.parentID) return
+            this.$router.push(this.localePath('explorer') + `?id=${this.id}&dir=${node.parentID}`)
+        })
+    },
+    changeDirectory(dir) {
+      this.$router.push(this.localePath('explorer') + `?id=${this.id}&dir=${dir.id}`)
     },
     createDirectory(directoryName) {
       this.$store.commit("fileSystem/createDirectory", {
-        name: directoryName
+        name: directoryName,
+        instanceID: this.id,
+        parentID: this.dirID
       })
-      this.$store.commit("fileSystem/save", this.$route.query.id || '')
+      this.fetchNodes()
     },
     createFile(fileName) {
       this.$store.commit("fileSystem/createFile", {
         name: fileName,
-        content: ''
+        content: '',
+        instanceID: this.id,
+        parentID: this.dirID
       })
-      this.$store.commit("fileSystem/save", this.$route.query.id || '')
+      this.fetchNodes()
     },
     openFile(item) {
-      this.$store.commit('fileSystem/setCurrentFile', item)
       const arr = item.name.split('.')
       const ext = arr[arr.length - 1]
       if(ext === 'md') {
-        this.$router.push(this.localePath('markdown_editor') + `?id=${this.id}`)
+        this.$router.push(this.localePath('markdown_editor') + `?id=${this.id}&file=${item.id}`)
       } else if(ext === 'dgm') {
-        this.$router.push(this.localePath('diagram') + `?id=${this.id}`)
+        this.$router.push(this.localePath('diagram') + `?id=${this.id}&file=${item.id}`)
       } else {
-        this.$router.push(this.localePath('text_editor') + `?id=${this.id}`)
+        this.$router.push(this.localePath('text_editor') + `?id=${this.id}&file=${item.id}`)
       }
     },
     removeFile() {

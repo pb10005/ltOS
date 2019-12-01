@@ -12,7 +12,7 @@
     <v-list>
       <div
         v-for="(item, index) in nodes"
-        :key="item.name">
+        :key="item.id">
         <v-list-item>
         <v-list-item-avatar>
             <v-icon :color="getIcon(item.nodeType, item.name).color"

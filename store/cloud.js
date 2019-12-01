@@ -80,6 +80,15 @@ export const actions =  {
                 })
         })
     },
+    createInstance(context, payload) {
+        const user = auth().currentUser
+        if(!user) return
+        db.collection('fss')
+            .add({
+                name: payload.name,
+                user: user.uid
+            })
+    },
     signOut() {
         auth().signOut()
     }
