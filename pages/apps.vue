@@ -28,17 +28,19 @@
                 </v-list-item-content>
             </v-list-item>
         </v-card>
-        <v-list>
-            <v-list-item @click="$router.push(localePath(item.link) + `?id=${id}`)" v-for="(item, index) in items" :key="index">
-                <v-list-item-avatar>
-                    <v-icon color="indigo">{{item.icon}}</v-icon>
-                </v-list-item-avatar>
-                <v-list-item-content>
-                    {{ $t(item.name) }}
-                </v-list-item-content>
-            </v-list-item>
-        </v-list>
-    </section>
+        <v-row>
+            <v-col cols="6" md="3" v-for="(item, index) in items" :key="index">
+                <v-card tile @click="$router.push(localePath(item.link) + `?id=${id}`)">
+                    <v-avatar>
+                        <v-icon large color="indigo">{{item.icon}}</v-icon>
+                    </v-avatar>
+                    <v-list-item>
+                        {{ $t(item.name) }}
+                    </v-list-item>
+                </v-card>
+            </v-col>
+        </v-row>
+    </section>    
 </template>
 <script>
 export default {
