@@ -9,7 +9,7 @@
 }
 </i18n>
 <template>
-    <v-container fluid>
+    <section>
         <v-card outlined>
             <v-list-item>
                 <v-list-item-content>
@@ -36,7 +36,7 @@
             @click="$router.push(localePath('add_instance'))">
             <v-icon>mdi-plus</v-icon>
         </v-btn>
-    </v-container>
+    </section>
 </template>
 <script>
 import { auth } from 'firebase'
