@@ -30,9 +30,11 @@
         </v-card>
         <v-row>
             <v-col cols="6" md="3" v-for="(item, index) in items" :key="index">
-                <v-card tile @click="$router.push(localePath(item.link) + `?id=${id}`)">
-                    <v-avatar>
-                        <v-icon large color="indigo">{{item.icon}}</v-icon>
+                <v-card
+                    outlined
+                    @click="$router.push(localePath(item.link) + `?id=${id}`)">
+                    <v-avatar color="indigo">
+                        <v-icon large dark>{{item.icon}}</v-icon>
                     </v-avatar>
                     <v-list-item>
                         {{ $t(item.name) }}

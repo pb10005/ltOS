@@ -9,18 +9,15 @@
 }
 </i18n>
 <template>
-    <section>
+    <v-container fluid>
         <v-card outlined>
             <v-list-item>
                 <v-list-item-content>
                     <v-list-item-title class="headline mb-1">{{ currentUser.displayName }}</v-list-item-title>
+                    <v-list-item-subtitle>{{ currentUser.username }}</v-list-item-subtitle>
                 </v-list-item-content>
             </v-list-item>
         </v-card>
-        <v-btn @click="$router.push(localePath('add_instance'))">
-            <v-icon>mdi-plus</v-icon>
-            <span>{{ $t('addins') }}</span>
-        </v-btn>
         <v-list>
             <div v-for="(item, index) in fss" :key="index" >
                 <v-list-item @click="openFS(item)">
@@ -29,7 +26,17 @@
                 <v-divider v-if="index < fss.length - 1" />
             </div>
         </v-list>
-    </section>
+        <v-btn
+            fab
+            fixed
+            bottom
+            right
+            dark
+            color="pink"
+            @click="$router.push(localePath('add_instance'))">
+            <v-icon>mdi-plus</v-icon>
+        </v-btn>
+    </v-container>
 </template>
 <script>
 import { auth } from 'firebase'
