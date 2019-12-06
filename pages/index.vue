@@ -43,6 +43,7 @@ import { auth } from 'firebase'
 export default {
     middleware: ['auth'],
     mounted() {
+        this.$store.commit('app/app', 'dashboard')
         this.$store.dispatch('cloud/getFSsByUsername')
         this.$store.dispatch('cloud/getCurrentUser')
     },

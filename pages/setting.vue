@@ -1,18 +1,25 @@
 <i18n>
 {
     "ja": {
-        "lang": "言語"
+        "lang": "言語",
+        "selectlang": "言語を選択",
+        "passwd": "パスワード",
+        "passwdmail": "パスワード再設定メールを送信"
     },
     "en": {
-        "lang": "Language"
+        "lang": "Language",
+        "selectlang": "Select language",
+        "passwd": "Password",
+        "passwdmail": "Send password-reset email"
     }
 }
 </i18n>
 <template>
     <section>
-        <v-icon @click="$router.go(-1)">mdi-arrow-left</v-icon>
+        <v-icon @click="$router.push(localePath('index'))">mdi-arrow-left</v-icon>
+        <v-subheader>{{ $t('lang') }}</v-subheader>
         <v-select
-            :label="$t('lang')"
+            :label="$t('selectlang')"
             v-model="locale"
             item-text="state"
             item-value="abbr"
@@ -20,10 +27,13 @@
             return-object
             :items="items">
         </v-select>
+        <v-subheader>{{ $t('passwd') }}</v-subheader>
+        <v-btn @click="sendMail">{{ $t('passwdmail') }}</v-btn>
     </section>
 </template>
 <script>
 export default {
+    middleware: ['auth'],
     computed: {
         id() {
             return this.$route.query.id
@@ -44,6 +54,9 @@ export default {
     methods: {
         onChange() {
             this.$router.push(this.switchLocalePath(this.locale.abbr))
+        },
+        sendMail() {
+            this.$store.dispatch("cloud/sendPasswordResetMail")
         }
     }
 }

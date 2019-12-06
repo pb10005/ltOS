@@ -35,7 +35,7 @@ export const mutations = {
   createFile (state, {name, content, instanceID, parentID}) {
     if(!name) return
     const id = uuid()
-    db.collection("fss")
+    return db.collection("fss")
         .doc(instanceID)
         .collection("nodes")
         .doc(id)
@@ -50,7 +50,7 @@ export const mutations = {
   createDirectory (state, {name, instanceID, parentID}) {
     if(!name) return
     const id = uuid()
-    db.collection("fss")
+    return db.collection("fss")
         .doc(instanceID)
         .collection("nodes")
         .doc(id)
@@ -122,6 +122,7 @@ export const actions = {
                 })
             })
     })
+    return instance
   },
   getFile(context, payload) {
       return new Promise((resolve, reject) => {
@@ -140,7 +141,7 @@ export const actions = {
       })
   },
   updateFile(context, { instanceID, fileID, name, content }) {
-      db.collection('fss')
+      return db.collection('fss')
         .doc(instanceID)
         .collection('nodes')
         .doc(fileID)

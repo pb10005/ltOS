@@ -1,10 +1,12 @@
 <i18n>
 {
   "ja": {
-    "filename": "ファイル名"
+    "filename": "ファイル名",
+    "saved": "保存しました"
   },
   "en": {
-    "filename": "File Name"
+    "filename": "File Name",
+    "saved": "Saved"
   }
 }
 </i18n>
@@ -19,6 +21,16 @@
             :rows="30"
             v-model="content">
         </v-textarea>
+        <v-snackbar v-model="snackbar">
+            {{ message }}
+            <v-btn
+                color="pink"
+                text
+                @click="snackbar = false"
+            >
+                Close
+            </v-btn>
+        </v-snackbar>
     </section>
 </template>
 <script>
@@ -73,6 +85,8 @@ export default {
     },
     data() {
         return {
+            snackbar: false,
+            message: '',
             newName: '',
             newContent: ''
         }
@@ -84,6 +98,10 @@ export default {
                 fileID: this.fileID,
                 name: this.newName,
                 content: this.newContent
+            })
+            .then(() => {
+                this.snackbar = true
+                this.message = this.$t('saved')
             })
         },
         commit(payload) {

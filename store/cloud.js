@@ -26,18 +26,11 @@ export const mutations = {
 }
 
 export const actions =  {
+    register(context, { email, password }) {
+        return auth().createUserWithEmailAndPassword(email, password)
+    },
     auth(context, payload) {
-        return new Promise((resolve, reject) => {
-            auth().signInWithEmailAndPassword(payload.email, payload.password)
-                .then(() => {
-                    resolve()
-                })
-                .catch(err => {
-                    context.commit('clearFss')
-                    reject()
-                })
-
-        })
+        return auth().signInWithEmailAndPassword(payload.email, payload.password)
     },
     getCurrentUser(context, payload) {
         auth().onAuthStateChanged((user) => {
@@ -88,6 +81,11 @@ export const actions =  {
                 name: payload.name,
                 user: user.uid
             })
+    },
+    sendPasswordResetMail() {
+        const addr = auth().currentUser.email
+        if(!addr) return
+        return auth().sendPasswordResetEmail(addr)
     },
     signOut() {
         auth().signOut()
