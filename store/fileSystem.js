@@ -171,6 +171,8 @@ export const actions = {
         .doc(payload.instanceID)
         .collection('nodes')
         .where('parentID', '==', payload.dirID)
+        .orderBy('name')
+        .orderBy('nodeType')
         .get()
         .then(docs => {
             docs.forEach(doc => {

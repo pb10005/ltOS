@@ -2,11 +2,13 @@
 {
     "ja": {
       "filename": "ファイル名",
-        "edit": "編集"
+        "edit": "編集",
+        "saved": "保存しました"
     },
     "en": {
       "filename": "File Name",
-        "edit": "Edit"
+        "edit": "Edit",
+        "saved": "Saved"
     }
 }
 </i18n>
@@ -20,6 +22,16 @@
             <diagram-editor v-model="graph"/>
         </v-card>
         <v-footer app><span>Powered by:</span><a target="_blank" href="https://github.com/pb10005/diagram-vue">diagram-vue</a></v-footer>
+        <v-snackbar v-model="snackbar">
+            {{ message }}
+            <v-btn
+                color="pink"
+                text
+                @click="snackbar = false"
+            >
+                Close
+            </v-btn>
+        </v-snackbar>
     </section>
 </template>
 <script>
@@ -75,6 +87,8 @@ export default {
     },
     data() {
         return {
+            snackbar: false,
+            message: '',
             newname: '',
             graph :{
                 width: 1000,
@@ -104,6 +118,10 @@ export default {
                 fileID: this.fileID,
                 name: this.newName,
                 content: content
+            })
+            .then(() => {
+                this.snackbar = true
+                this.message = this.$t('saved')
             })
         }
     }

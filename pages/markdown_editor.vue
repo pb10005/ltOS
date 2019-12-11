@@ -3,12 +3,14 @@
     "ja": {
         "content": "マークダウン文書",
         "preview": "プレビュー",
-        "filename": "ファイル名"
+        "filename": "ファイル名",
+        "saved": "保存しました"
     },
     "en": {
         "content": "Content",
         "preview": "Preview",
-          "filename": "File Name"
+        "filename": "File Name",
+        "saved": "Saved"
     }
 }
 </i18n>
@@ -34,6 +36,16 @@
                 </v-card>
             </v-col>
         </v-row>
+        <v-snackbar v-model="snackbar">
+            {{ message }}
+            <v-btn
+                color="pink"
+                text
+                @click="snackbar = false"
+            >
+                Close
+            </v-btn>
+        </v-snackbar>
     </section>
 </template>
 <script>
@@ -92,6 +104,8 @@ export default {
     },
     data() {
         return {
+            snackbar: false,
+            message: '',
             newName: '',
             newContent: '',
             showPreview:false,
@@ -105,6 +119,10 @@ export default {
                 fileID: this.fileID,
                 name: this.newName,
                 content: this.newContent
+            })
+            .then(() => {
+                this.snackbar = true
+                this.message = this.$t('saved')
             })
         },
         commit(payload) {
