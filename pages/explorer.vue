@@ -135,13 +135,17 @@ export default {
       }
     },
     removeFile() {
-      this.$store.commit('fileSystem/removeFile', this.removeCandidate)
-      this.$store.commit("fileSystem/save", this.$route.query.id || '')
+      this.$store.commit('fileSystem/removeFile', {
+          instanceID: this.id,
+          nodeID: this.removeCandidate.id
+      })
       this.removeFileDialog = false
     },
     removeDirectory() {
-      this.$store.commit('fileSystem/removeDirectory', this.removeCandidate)
-      this.$store.commit("fileSystem/save", this.$route.query.id || '')
+      this.$store.commit('fileSystem/removeDirectory', {
+          instanceID: this.id,
+          nodeID: this.removeCandidate.id
+      })
       this.removeDirectoryDialog = false
     }
   }

@@ -64,30 +64,23 @@ export const mutations = {
   setCurrentFile(state, file) {
     state.currentFile = file
   },
-  removeDirectory(state, node) {
-    if(state.currentDirectory === state.trash) {
-      state.nodes = state.nodes.filter(x => {
-        let tmp = x
-        let count = 0
-        while(tmp !== state.root) {
-          if(count++ >= 1000) break
-          if(tmp === node) {
-            return false
-          }
-          tmp = tmp.parent
-        }
-        return true
-      })
-    } else {
-      node.parent = state.trash
-    }
+  removeDirectory(state, { instanceID, nodeID }) {
+    db.collection("fss")
+        .doc(instanceID)
+        .collection("nodes")
+        .doc(nodeID)
+        .update({
+            parentID: "trash"
+        });
   },
-  removeFile(state, node) {
-    if(state.currentDirectory === state.trash) {
-      state.nodes = state.nodes.filter(x => x !== node)
-    } else {
-      node.parent = state.trash
-    }
+  removeFile(state, { instanceID, nodeID }) {
+    db.collection("fss")
+        .doc(instanceID)
+        .collection("nodes")
+        .doc(nodeID)
+        .update({
+            parentID: "trash"
+        });
   },
   setCurrentID(state, payload) {
     state.currentID = payload.id
