@@ -79,6 +79,7 @@ export const actions =  {
         db.collection('fss')
             .add({
                 name: payload.name,
+                private: payload.private,
                 user: user.uid
             })
     },
